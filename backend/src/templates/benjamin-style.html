@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @page { size: A4; margin: 0; }
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-white">
+    <div class="h-full px-14 py-16">
+        
+        <!-- LIGNE VERTICALE GAUCHE DÉCORATIVE -->
+        <div class="absolute left-6 top-0 w-0.5 h-20 bg-gray-900"></div>
+        
+        <!-- HEADER : Nom + Photo -->
+        <div class="flex justify-between items-start mb-8">
+            <div>
+                <h1 class="text-5xl font-light uppercase tracking-widest text-gray-900 mb-1">{{firstname}}</h1>
+                <h1 class="text-5xl font-light uppercase tracking-widest text-gray-900 mb-3">{{lastname}}</h1>
+                <div class="w-0.5 h-10 bg-gray-900 ml-1"></div>
+            </div>
+            <!-- PHOTO RONDE DROITE -->
+            <div class="w-44 h-44 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
+                {{#if photoUrl}}
+                <img src="{{photoUrl}}" class="w-full h-full object-cover grayscale" alt="Photo">
+                {{/if}}
+            </div>
+        </div>
+        
+        <!-- LAYOUT 2 COLONNES -->
+        <div class="flex gap-10">
+            
+            <!-- COLONNE GAUCHE (35%) -->
+            <div class="w-[35%]">
+                
+                <!-- CONTACT -->
+                <div class="mb-6">
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-3">Contact</h2>
+                    <div class="space-y-1 text-xs text-gray-700">
+                        <p>{{phone}}</p>
+                        <p>{{email}}</p>
+                        <p>{{address}}</p>
+                    </div>
+                </div>
+                
+                <!-- FORMATION -->
+                {{#if education}}
+                {{#if education.length}}
+                <div class="mb-6">
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-3">Formation</h2>
+                    <div class="space-y-4 border-l-2 border-gray-300 pl-3">
+                        {{#each education}}
+                        <div class="relative">
+                            <div class="absolute -left-[18px] top-1 w-2.5 h-2.5 rounded-full border-2 border-gray-900 bg-white"></div>
+                            <p class="text-xs font-bold uppercase text-gray-900 leading-tight">{{this.degree}}</p>
+                            <p class="text-xs text-gray-600">{{this.years}}</p>
+                            <p class="text-xs text-gray-600">{{this.institution}}</p>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+                
+                <!-- COMPÉTENCES -->
+                {{#if skills}}
+                {{#if skills.length}}
+                <div class="mb-6">
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-3">Compétences</h2>
+                    <ul class="space-y-1 text-xs text-gray-700">
+                        {{#each skills}}
+                        <li class="flex items-start">
+                            <span class="mr-1">•</span>
+                            <span>{{this}}</span>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+                {{/if}}
+                
+                <!-- LANGUES -->
+                {{#if languages}}
+                {{#if languages.length}}
+                <div>
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-3">Langues</h2>
+                    <ul class="space-y-1 text-xs text-gray-700">
+                        {{#each languages}}
+                        <li class="flex items-start">
+                            <span class="mr-1">•</span>
+                            <span>{{this.name}}</span>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+                {{/if}}
+            </div>
+            
+            <!-- COLONNE DROITE (65%) -->
+            <div class="w-[65%]">
+                
+                <!-- PROFIL (EN HAUT DE LA COLONNE DROITE comme sur l'image) -->
+                {{#if summary}}
+                <div class="mb-6">
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-3">Profil</h2>
+                    <p class="text-xs text-gray-700 leading-relaxed text-justify">{{summary}}</p>
+                </div>
+                {{/if}}
+                
+                <!-- EXPÉRIENCES PROFESSIONNELLES -->
+                {{#if experiences}}
+                {{#if experiences.length}}
+                <div>
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-1">Expériences</h2>
+                    <h2 class="text-sm font-bold uppercase text-gray-900 mb-3">professionnelles</h2>
+                    <div class="space-y-5 border-l-2 border-gray-300 pl-4">
+                        {{#each experiences}}
+                        <div class="relative">
+                            <div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 border-gray-900 bg-white"></div>
+                            <h3 class="text-xs font-bold uppercase text-gray-900 leading-tight">{{this.position}}</h3>
+                            <p class="text-xs text-gray-600 mb-2">{{this.years}}</p>
+                            {{#if this.tasks}}
+                            {{#if this.tasks.length}}
+                            <ul class="space-y-0.5">
+                                {{#each this.tasks}}
+                                <li class="text-xs text-gray-700 flex items-start leading-tight">
+                                    <span class="mr-1.5">•</span>
+                                    <span>{{this}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/if}}
+                            {{/if}}
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

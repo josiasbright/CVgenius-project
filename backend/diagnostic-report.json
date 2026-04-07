@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Installation de Puppeteer",
+    "success": true,
+    "version": "24.37.3"
+  },
+  {
+    "name": "Ressources Système",
+    "success": true
+  },
+  {
+    "name": "Lancement de Puppeteer",
+    "success": true,
+    "launchTime": 3638
+  },
+  {
+    "name": "Génération PDF Simple",
+    "success": true,
+    "genTime": 2853,
+    "size": 48035
+  },
+  {
+    "name": "Génération PDF Complexe",
+    "success": true,
+    "genTime": 3713,
+    "size": 51072
+  },
+  {
+    "name": "Détection Ressources Externes",
+    "success": false,
+    "warning": "External resources found",
+    "requests": [
+      {
+        "url": "https://cdn.example.com/style.css",
+        "type": "stylesheet"
+      },
+      {
+        "url": "https://cdn.example.com/script.js",
+        "type": "script"
+      },
+      {
+        "url": "https://example.com/logo.png",
+        "type": "image"
+      }
+    ]
+  }
+]

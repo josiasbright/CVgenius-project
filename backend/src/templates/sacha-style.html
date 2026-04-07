@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @page { size: A4; margin: 0; }
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div class="flex h-full">
+
+        <!-- SIDEBAR GAUCHE (32%) -->
+        <div class="w-[32%] bg-[#1B4965] text-white relative flex flex-col h-full">
+
+            <!-- FORME ARRONDIE BLANCHE -->
+            <div class="absolute top-0 right-0 w-36 h-72 bg-white rounded-bl-full z-0"></div>
+
+            <!-- PHOTO RONDE -->
+            <div class="relative z-10 w-40 h-40 rounded-full bg-gray-200 mx-auto mt-10 mb-10 overflow-hidden border-4 border-white flex-shrink-0">
+                {{#if photoUrl}}
+                <img src="{{photoUrl}}" class="w-full h-full object-cover" alt="Photo">
+                {{/if}}
+            </div>
+
+            <!-- CONTENU SIDEBAR : gap-7 pour espacement naturel -->
+            <div class="relative z-10 px-7 flex flex-col flex-1 gap-7 pb-10">
+
+                <!-- COORDONNÉES -->
+                <div>
+                    <h2 class="text-sm font-bold uppercase mb-3">Coordonnées</h2>
+                    <div class="space-y-3 text-xs">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-white flex-shrink-0" viewBox="0 0 24 24">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <span>{{phone}}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-white flex-shrink-0" viewBox="0 0 24 24">
+                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span class="break-all">{{email}}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-white flex-shrink-0" viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>{{address}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LANGUES -->
+                {{#if languages}}
+                {{#if languages.length}}
+                <div>
+                    <h2 class="text-sm font-bold uppercase mb-3">Langues</h2>
+                    <div class="space-y-4">
+                        {{#each languages}}
+                        <div>
+                            <p class="text-xs font-semibold mb-2">{{this.name}}</p>
+                            <div class="w-full h-1.5 bg-white/30 rounded-full">
+                                <div class="h-full bg-white rounded-full" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+
+                <!-- COMPÉTENCES -->
+                {{#if skills}}
+                {{#if skills.length}}
+                <div>
+                    <h2 class="text-sm font-bold uppercase mb-3">Compétences</h2>
+                    <div class="space-y-2 text-xs leading-5">
+                        {{#each skills}}
+                        <p>{{this}}</p>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+
+                <!-- CENTRES D'INTÉRÊT -->
+                {{#if hobbies}}
+                {{#if hobbies.length}}
+                <div>
+                    <h2 class="text-sm font-bold uppercase mb-3">Centres d'intérêt</h2>
+                    <div class="space-y-2 text-xs leading-5">
+                        {{#each hobbies}}
+                        <p>{{this.name}}</p>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+            </div>
+        </div>
+
+        <!-- COLONNE DROITE (68%) : gap-8 pour espacement naturel -->
+        <div class="w-[68%] bg-white px-10 flex flex-col gap-8 h-full py-10">
+
+            <!-- HEADER -->
+            <div>
+                <h1 class="text-5xl font-bold text-[#1B4965] mb-2">{{firstname}} {{lastname}}</h1>
+                <p class="text-lg font-semibold uppercase text-[#1B4965]">{{title}}</p>
+            </div>
+
+            <!-- FORMATION -->
+            {{#if education}}
+            {{#if education.length}}
+            <div>
+                <h2 class="text-xl font-bold uppercase text-gray-900 mb-4">Formation</h2>
+                <div class="space-y-5 border-l-4 border-[#1B4965] pl-5">
+                    {{#each education}}
+                    <div class="relative">
+                        <div class="absolute -left-[25px] top-1 w-2.5 h-2.5 rounded-full bg-[#1B4965]"></div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-sm font-bold text-[#1B4965]">{{this.degree}}</h3>
+                            <span class="text-xs italic text-gray-600 ml-4 whitespace-nowrap">{{this.years}}</span>
+                        </div>
+                        <p class="text-xs text-gray-700 mt-1">{{this.institution}}</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+
+            <!-- EXPÉRIENCE PROFESSIONNELLE -->
+            {{#if experiences}}
+            {{#if experiences.length}}
+            <div>
+                <h2 class="text-xl font-bold uppercase text-gray-900 mb-4">Expérience professionnelle</h2>
+                <div class="space-y-6 border-l-4 border-[#1B4965] pl-5">
+                    {{#each experiences}}
+                    <div class="relative">
+                        <div class="absolute -left-[25px] top-1 w-2.5 h-2.5 rounded-full bg-[#1B4965]"></div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-sm font-bold text-[#1B4965]">{{this.position}}</h3>
+                            <span class="text-xs italic text-gray-600 ml-4 whitespace-nowrap">{{this.years}}</span>
+                        </div>
+                        <p class="text-xs italic text-gray-700 mb-2 mt-1">{{this.company}}</p>
+                        {{#if this.tasks}}
+                        {{#if this.tasks.length}}
+                        <ul class="space-y-1.5">
+                            {{#each this.tasks}}
+                            <li class="text-xs text-gray-700 flex items-start leading-5">
+                                <span class="mr-2">•</span>
+                                <span>{{this}}</span>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+    </div>
+</body>
+</html>

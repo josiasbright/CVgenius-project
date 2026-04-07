@@ -1,0 +1,29 @@
+
+      JEAN DUPONT
+      Développeur Full Stack
+      
+      Email: jean.dupont@email.com
+      Téléphone: 06 12 34 56 78
+      Paris, France
+      
+      EXPÉRIENCE PROFESSIONNELLE
+      
+      2020 - 2023 : Développeur Full Stack - TechCorp
+      - Développement d'applications web avec Node.js et React
+      - Gestion de projet en méthodologie Agile
+      - Réalisation de 15 projets clients avec succès
+      
+      2018 - 2020 : Développeur    Junior - StartupXYZ
+      - Création d'API REST
+      - Intégration continue avec Jenkins
+      
+      FORMATION
+      
+      2015 - 2018 : Master Informatique - Université Paris
+      2013 - 2015 : Licence Informatique - Université Paris
+      
+      COMPÉTENCES
+      
+      JavaScript, Node.js, React, PostgreSQL, Docker, Git
+      Anglais courant, Espagnol intermédiaire
+    

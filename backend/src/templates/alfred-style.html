@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div class="flex h-full">
+        
+        <!-- SIDEBAR GAUCHE (35%) - FOND NOIR -->
+        <div class="w-[35%] bg-[#2D2D2D] text-white px-8 py-10">
+            
+            <!-- PHOTO RONDE -->
+            <div class="w-48 h-48 rounded-full bg-gray-200 mx-auto mb-12 overflow-hidden">
+                {{#if photoUrl}}
+                <img src="{{photoUrl}}" class="w-full h-full object-cover" alt="Photo">
+                {{/if}}
+            </div>
+            
+            <!-- COORDONNÉES -->
+            <div class="mb-12">
+                <h2 class="text-xl font-bold uppercase mb-6">Coordonnées</h2>
+                <div class="space-y-3 text-sm">
+                    <p>{{address}}</p>
+                    <p>{{email}}</p>
+                    <p>{{phone}}</p>
+                    {{#if website}}
+                    <p>{{website}}</p>
+                    {{/if}}
+                </div>
+            </div>
+            
+            <!-- LANGUES -->
+            {{#if languages}}
+            {{#if languages.length}}
+            <div class="mb-12">
+                <h2 class="text-xl font-bold uppercase mb-6">Langues</h2>
+                <div class="space-y-2 text-sm">
+                    {{#each languages}}
+                    <p><span class="font-semibold">{{this.name}}</span> - {{this.level}}</p>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+            
+            <!-- COMPÉTENCES -->
+            {{#if skills}}
+            {{#if skills.length}}
+            <div class="mb-12">
+                <h2 class="text-xl font-bold uppercase mb-6">Compétences</h2>
+                <div class="space-y-2 text-sm">
+                    {{#each skills}}
+                    <p>{{this}}</p>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+            
+            <!-- CENTRES D'INTÉRÊTS -->
+            {{#if hobbies}}
+            {{#if hobbies.length}}
+            <div>
+                <h2 class="text-xl font-bold uppercase mb-6">Centres<br>d'intérêts</h2>
+                <div class="space-y-2 text-sm">
+                    {{#each hobbies}}
+                    <p>{{this.name}}</p>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+        
+        <!-- COLONNE DROITE (65%) - FOND BLANC -->
+        <div class="w-[65%] bg-white px-10 py-10">
+            
+            <!-- HEADER -->
+            <div class="mb-10">
+                <h1 class="text-6xl font-bold text-gray-900 mb-2">{{firstname}}</h1>
+                <h1 class="text-6xl font-bold text-gray-900 mb-4">{{lastname}}</h1>
+                <p class="text-lg font-bold uppercase text-gray-900">{{title}}</p>
+            </div>
+            
+            <!-- EXPÉRIENCES PROFESSIONNELLES -->
+            {{#if experiences}}
+            {{#if experiences.length}}
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold uppercase text-gray-900 mb-6">Expériences professionnelles</h2>
+                <div class="space-y-8 border-l-2 border-gray-900 pl-8">
+                    {{#each experiences}}
+                    <div class="relative">
+                        <div class="absolute -left-[37px] top-0 w-4 h-4 rounded-full border-2 border-gray-900 bg-white"></div>
+                        <h3 class="text-base font-bold uppercase text-gray-900 mb-1">{{this.position}}</h3>
+                        <p class="text-sm text-gray-700 mb-3">{{this.company}} | {{this.years}}</p>
+                        {{#if this.tasks}}
+                        {{#if this.tasks.length}}
+                        <ul class="space-y-1">
+                            {{#each this.tasks}}
+                            {{#if @index}}
+                            {{#if (lt @index 4)}}
+                            <li class="text-xs text-gray-700 leading-relaxed flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>{{this}}</span>
+                            </li>
+                            {{/if}}
+                            {{else}}
+                            <li class="text-xs text-gray-700 leading-relaxed flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>{{this}}</span>
+                            </li>
+                            {{/if}}
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+            
+            <!-- FORMATIONS -->
+            {{#if education}}
+            {{#if education.length}}
+            <div>
+                <h2 class="text-2xl font-bold uppercase text-gray-900 mb-6">Formations</h2>
+                <div class="space-y-6 border-l-2 border-gray-900 pl-8">
+                    {{#each education}}
+                    <div class="relative">
+                        <div class="absolute -left-[37px] top-0 w-4 h-4 rounded-full border-2 border-gray-900 bg-white"></div>
+                        <h3 class="text-base font-bold uppercase text-gray-900 mb-1">{{this.degree}}</h3>
+                        <p class="text-sm text-gray-700">{{this.institution}} | {{this.years}}</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+    </div>
+</body>
+</html>
