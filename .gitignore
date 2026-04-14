@@ -1,0 +1,18 @@
+# Dépendances
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Environnement et secrets
+.env
+frontend/.env
+backend/.env
+.env.local
+
+# Build
+dist/
+frontend/dist/
+backend/dist/
+
+# Divers
+.DS_Store
