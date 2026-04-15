@@ -57,11 +57,11 @@ class AuthController {
         { expiresIn: '24h' }
       );
       
-      // Stocker le token dans un cookie httpOnly
+      // Stocker le token dans un cookie httpOnly (MODIFIÉ POUR RENDER)
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 heures
       });
       
@@ -122,11 +122,11 @@ class AuthController {
         { expiresIn: '24h' }
       );
       
-      // Stocker le token dans un cookie httpOnly
+      // Stocker le token dans un cookie httpOnly (MODIFIÉ POUR RENDER)
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 heures
       });
       
@@ -151,8 +151,12 @@ class AuthController {
   // ================================================
   static async logout(req, res, next) {
     try {
-      // Supprimer le cookie
-      res.clearCookie('token');
+      // Supprimer le cookie (MODIFIÉ POUR RENDER)
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      });
       
       res.json({
         message: 'Déconnexion réussie'
@@ -218,11 +222,11 @@ class AuthController {
         { expiresIn: '24h' }
       );
       
-      // Mettre à jour le cookie
+      // Mettre à jour le cookie (MODIFIÉ POUR RENDER)
       res.cookie('token', newToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000
       });
       
