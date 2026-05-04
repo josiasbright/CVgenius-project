@@ -89,7 +89,7 @@ export default function MyCvsPage() {
     <div className="min-h-screen bg-[#F8FAFC] py-16 px-6 font-['Inter']">
       <div className="max-w-7xl mx-auto">
         
-        {/* HEADER SECTION */}
+       
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -112,7 +112,6 @@ export default function MyCvsPage() {
 </Link>
         </div>
 
-        {/* SEARCH BAR */}
         <div className="mb-12 relative max-w-xl">
           <div className="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full"></div>
           <div className="relative">
@@ -127,7 +126,7 @@ export default function MyCvsPage() {
           </div>
         </div>
 
-        {/* GRID SECTION */}
+        
         {cvs.length === 0 ? (
           <EmptyState />
         ) : (
@@ -160,24 +159,24 @@ function CvCard({ cv, onDelete, onDownload, onPreview, index }) {
       animate={{ opacity: 1, y: 0 }} 
       transition={{ delay: index * 0.05, type: "spring", stiffness: 100 }}
       whileHover={{ y: -15 }}
-      // L'ombre est maintenant Indigo, ce qui fait ressortir la carte du fond gris
+     
       className="relative bg-white rounded-[45px] p-1 shadow-[0_30px_60px_-15px_rgba(79,70,229,0.15)] group transition-all"
     >
-      {/* --- BORDURE LUMINEUSE (Identité Visuelle Forte) --- */}
+     
       <div className="absolute inset-0 rounded-[45px] p-[2px] bg-gradient-to-br from-indigo-500/20 via-transparent to-blue-500/20 group-hover:from-indigo-500 group-hover:to-blue-600 transition-all duration-500" />
       
-      {/* CONTENU INTERNE */}
+      
       <div className="relative bg-white rounded-[43px] overflow-hidden">
         
-        {/* HEADER DE LA CARTE (L'aperçu stylisé) */}
+        
         <div className="relative aspect-[4/5] m-2 rounded-[35px] overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-100">
           
-          {/* Background Dynamique (Aura de ta couleur principale) */}
+          
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
             <div className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-100/40 via-transparent to-transparent animate-pulse" />
           </div>
 
-          {/* DOCUMENT HOLOGRAPHIQUE (Plus contrasté) */}
+         
           <motion.div 
             whileHover={{ scale: 1.05, rotateZ: 2 }}
             className="relative z-10 w-36 h-48 bg-white rounded-2xl shadow-[0_25px_50px_-12px_rgba(79,70,229,0.2)] border border-indigo-50 flex flex-col p-5"
@@ -194,7 +193,7 @@ function CvCard({ cv, onDelete, onDownload, onPreview, index }) {
               </div>
             </div>
             
-            {/* Ligne de scan "Laser Indigo" */}
+            
             <motion.div 
               animate={{ top: ['-10%', '110%'] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
@@ -202,7 +201,7 @@ function CvCard({ cv, onDelete, onDownload, onPreview, index }) {
             />
           </motion.div>
 
-          {/* ACTIONS AU SURVOL */}
+          
           <div className="absolute inset-0 bg-indigo-950/5 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 z-30">
               <button onClick={onPreview} className="p-4 bg-white text-indigo-600 rounded-2xl shadow-xl hover:bg-indigo-50 transition-all">
                 <Eye size={22} strokeWidth={2.5} />
@@ -213,7 +212,7 @@ function CvCard({ cv, onDelete, onDownload, onPreview, index }) {
           </div>
         </div>
 
-        {/* FOOTER (Identité textuelle) */}
+        
         <div className="p-6 pt-2">
           <div className="flex justify-between items-center">
             <div className="max-w-[75%]">

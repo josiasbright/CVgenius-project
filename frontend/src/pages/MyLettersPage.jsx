@@ -32,7 +32,6 @@ export default function MyLettersPage() {
     try {
       setLoading(true);
       const data = await letterService.getAllLetters();
-      // ✅ CORRECTION : Le backend envoie 'coverLetters', pas 'letters'
       setLetters(data.coverLetters || []); 
     } catch (error) {
       console.error('Erreur chargement lettres:', error);
@@ -64,7 +63,7 @@ export default function MyLettersPage() {
     }
   };
 
-  // ✅ NOUVELLE FONCTION : Aperçu comme pour les CVs
+  
   const handlePreview = async (id) => {
     try {
       const pdfBlob = await letterService.generatePdf(id);
@@ -98,7 +97,7 @@ export default function MyLettersPage() {
       
       <div className="max-w-7xl mx-auto">
         
-        {/* --- HEADER --- */}
+      
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
           <div>
             <button 
@@ -119,7 +118,7 @@ export default function MyLettersPage() {
           </Link>
         </div>
 
-        {/* --- RECHERCHE --- */}
+       
         <div className="mb-10 relative max-w-md group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
           <input 
@@ -131,7 +130,7 @@ export default function MyLettersPage() {
           />
         </div>
 
-        {/* --- GRID --- */}
+       
         {letters.length === 0 ? (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -191,31 +190,31 @@ function LetterCard({ letter, index, onDelete, onDownload, onPreview }) {
       whileHover={{ y: -15 }}
       className="relative bg-white rounded-[45px] p-1 shadow-[0_30px_60px_-15px_rgba(79,70,229,0.15)] group transition-all"
     >
-      {/* BORDURE LUMINEUSE */}
+     
       <div className="absolute inset-0 rounded-[45px] p-[2px] bg-gradient-to-br from-indigo-500/20 via-transparent to-blue-500/20 group-hover:from-indigo-500 group-hover:to-blue-600 transition-all duration-500" />
 
-      {/* CONTENU INTERNE */}
+      
       <div className="relative bg-white rounded-[43px] overflow-hidden">
 
-        {/* APERÇU */}
+     
         <div className="relative aspect-[4/5] m-2 rounded-[35px] overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-100">
 
-          {/* Aura au survol */}
+          
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
             <div className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-100/40 via-transparent to-transparent animate-pulse" />
           </div>
 
-          {/* DOCUMENT LETTRE */}
+         
           <motion.div
             whileHover={{ scale: 1.05, rotateZ: 2 }}
             className="relative z-10 w-36 h-48 bg-white rounded-2xl shadow-[0_25px_50px_-12px_rgba(79,70,229,0.2)] border border-indigo-50 flex flex-col p-5"
           >
-            {/* Icône Mail */}
+            
             <div className="w-8 h-8 bg-indigo-600 rounded-lg mb-4 flex items-center justify-center shadow-lg shadow-indigo-200">
               <Mail size={16} className="text-white" />
             </div>
 
-            {/* Simulation lignes de lettre */}
+           
             <div className="space-y-2">
               <div className="h-1.5 w-3/4 bg-indigo-100 rounded-full" />
               <div className="pt-2 space-y-1.5">
@@ -231,7 +230,7 @@ function LetterCard({ letter, index, onDelete, onDownload, onPreview }) {
               </div>
             </div>
 
-            {/* Ligne de scan laser */}
+           
             <motion.div
               animate={{ top: ['-10%', '110%'] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
@@ -239,7 +238,7 @@ function LetterCard({ letter, index, onDelete, onDownload, onPreview }) {
             />
           </motion.div>
 
-          {/* ACTIONS AU SURVOL */}
+        
           <div className="absolute inset-0 bg-indigo-950/5 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 z-30">
             <button onClick={onPreview} className="p-4 bg-white text-indigo-600 rounded-2xl shadow-xl hover:bg-indigo-50 transition-all">
               <Eye size={22} strokeWidth={2.5} />
@@ -250,7 +249,7 @@ function LetterCard({ letter, index, onDelete, onDownload, onPreview }) {
           </div>
         </div>
 
-        {/* FOOTER */}
+       
         <div className="p-6 pt-2">
           <div className="flex justify-between items-center">
             <div className="max-w-[75%]">

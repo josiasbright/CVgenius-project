@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Vérification de la session au chargement de l'application
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -25,7 +24,6 @@ export function AuthProvider({ children }) {
     checkAuth();
   }, []);
 
-  // 1. AJOUT DE LA FONCTION REGISTER
   const register = async (fullName, email, password) => {
     try {
       const data = await authService.register(fullName, email, password);
@@ -34,7 +32,7 @@ export function AuthProvider({ children }) {
       return data;
     } catch (error) {
       setIsAuthenticated(false);
-      throw error; // On propage l'erreur pour la capturer dans RegisterPage
+      throw error; 
     }
   };
 
@@ -60,7 +58,6 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    // 2. INJECTION DE 'register' DANS LE CONTEXTE
     <AuthContext.Provider value={{ 
       user, 
       loading, 
@@ -74,7 +71,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Hook personnalisé pour utiliser le contexte
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

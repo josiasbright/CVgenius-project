@@ -1,17 +1,13 @@
-// ================================================
-// COVER LETTER CONTROLLER - Gestion lettres
-// ================================================
-
 const CoverLetter = require('../models/CoverLetter');
 const Cv = require('../models/Cv');
 const CoverLetterGenerator = require('../utils/coverLetterGenerator');
 const { getPdfGenerator } = require('../utils/pdfGenerator');
 
+/**
+ * Gère la génération et la persistance des lettres de motivation basées sur les CV.
+ */
 class CoverLetterController {
 
-  // ================================================
-  // CREATE FROM CV - Créer lettre depuis CV
-  // ================================================
   static async createFromCv(req, res, next) {
     try {
       const userId = req.userId;
@@ -23,7 +19,6 @@ class CoverLetterController {
         jobOfferText
       } = req.body;
 
-      // Validation
       if (!targetCompany || !targetPosition || !companyType) {
         return res.status(400).json({
           error: 'Entreprise cible, poste et type entreprise requis'
@@ -36,7 +31,6 @@ class CoverLetterController {
         });
       }
 
-      // Vérifier que le CV existe et appartient à l'user
       const cv = await Cv.findById(cvId, userId);
       if (!cv) {
         return res.status(404).json({
@@ -44,7 +38,6 @@ class CoverLetterController {
         });
       }
 
-      // Générer le contenu de la lettre
       const content = CoverLetterGenerator.generate(cv.cv_data, {
         targetCompany,
         targetPosition,
@@ -52,10 +45,8 @@ class CoverLetterController {
         jobOfferText
       });
 
-      // Titre automatique
       const title = `Lettre ${targetCompany} - ${targetPosition}`;
 
-      // Créer la lettre
       const coverLetter = await CoverLetter.create(cvId, userId, {
         title,
         targetCompany,
@@ -68,7 +59,7 @@ class CoverLetterController {
 
       res.status(201).json({
         message: 'Lettre de motivation générée avec succès',
-        coverLetter: coverLetter
+        coverLetter
       });
 
     } catch (error) {
@@ -76,9 +67,6 @@ class CoverLetterController {
     }
   }
 
-  // ================================================
-  // GET ALL BY CV - Toutes les lettres d'un CV
-  // ================================================
   static async getAllByCv(req, res, next) {
     try {
       const userId = req.userId;
@@ -96,9 +84,6 @@ class CoverLetterController {
     }
   }
 
-  // ================================================
-  // GET ALL BY USER - Toutes les lettres de l'user
-  // ================================================
   static async getAllByUser(req, res, next) {
     try {
       const userId = req.userId;
@@ -115,9 +100,6 @@ class CoverLetterController {
     }
   }
 
-  // ================================================
-  // GET ONE - Une lettre spécifique
-  // ================================================
   static async getOne(req, res, next) {
     try {
       const userId = req.userId;
@@ -140,9 +122,6 @@ class CoverLetterController {
     }
   }
 
-  // ================================================
-  // UPDATE - Modifier une lettre
-  // ================================================
   static async update(req, res, next) {
     try {
       const userId = req.userId;
@@ -167,9 +146,6 @@ class CoverLetterController {
     }
   }
 
-  // ================================================
-  // DELETE - Supprimer une lettre
-  // ================================================
   static async delete(req, res, next) {
     try {
       const userId = req.userId;
@@ -192,39 +168,30 @@ class CoverLetterController {
     }
   }
 
-  // ================================================
-  // GENERATE PDF - Générer PDF de la lettre
-  // ================================================
+  /**
+   * Produit un export PDF de la lettre de motivation.
+   * Implémente un mécanisme de race condition pour gérer les timeouts de rendu.
+   */
   static async generatePdf(req, res, next) {
     try {
       const userId = req.userId;
       const id = parseInt(req.params.id);
 
-      console.log(`🚀 Génération PDF lettre ${id}...`);
-
-      // 1️⃣ Récupérer la lettre
       const letter = await CoverLetter.findById(id, userId);
-
       if (!letter) {
         return res.status(404).json({
           error: 'Lettre non trouvée'
         });
       }
 
-      // 2️⃣ Parser le contenu si c'est une string JSON
       const content = typeof letter.content === 'string' 
         ? JSON.parse(letter.content) 
         : letter.content;
 
-      // 3️⃣ Générer le HTML de la lettre
       const htmlContent = generateCoverLetterHtml(letter, content);
 
-      console.log(`📏 Taille HTML: ${htmlContent.length} caractères`);
-
-      // 4️⃣ Obtenir le générateur PDF (singleton)
       const pdfGenerator = getPdfGenerator();
 
-      // 5️⃣ Générer le PDF avec timeout optimisé
       const pdfBuffer = await Promise.race([
         pdfGenerator.generate(htmlContent, { format: 'A4' }),
         new Promise((_, reject) => 
@@ -236,9 +203,6 @@ class CoverLetterController {
         throw new Error('Le PDF généré est vide');
       }
 
-      console.log(`✅ PDF lettre généré (${pdfBuffer.length} bytes)`);
-
-      // 6️⃣ Retourner le PDF
       const filename = `Lettre_${(letter.target_company || 'Motivation').replace(/\s/g, '_')}.pdf`;
 
       res.setHeader('Content-Type', 'application/pdf');
@@ -269,7 +233,6 @@ function generateCoverLetterHtml(letter, content) {
   const phone = coordonnees.phone || '';
   const city = coordonnees.city || '';
 
-  // Extraire l'en-tête
   const entete = content.entete || {};
   const targetCompany = entete.company || letter.target_company || 'Entreprise';
   const dateStr = entete.date || new Date().toLocaleDateString('fr-FR', {
@@ -278,33 +241,18 @@ function generateCoverLetterHtml(letter, content) {
     year: 'numeric'
   });
   
-  // Date formatée : "À Lomé, le 15 mars 2026"
   const cityForDate = entete.city || city || '';
   const formattedDate = cityForDate 
     ? `À ${cityForDate}, le ${dateStr}`
     : dateStr;
   
   const subject = entete.objet || `Candidature pour le poste de ${letter.target_position}`;
-
-  // Ville/pays de l'entreprise (extrait du CV ou de la lettre)
   const companyLocation = letter.company_location || '';
-
-  // Extraire les paragraphes
   const paragraphe1 = content.paragraphe1 || '';
   const paragraphe2 = content.paragraphe2 || '';
   const paragraphe3 = content.paragraphe3 || '';
   const paragraphe4 = content.paragraphe4 || '';
   const signature = content.signature || fullName;
-
-  console.log('✅ Données extraites:', {
-    fullName,
-    email: email ? '✅' : '❌',
-    phone: phone ? '✅' : '❌',
-    address: address ? '✅' : '❌',
-    city: city ? '✅' : '❌',
-    targetCompany,
-    formattedDate
-  });
 
   return `
     <!DOCTYPE html>
@@ -455,10 +403,9 @@ function generateCoverLetterHtml(letter, content) {
 }
 
 
-
-// ================================================
-// HELPER : Échapper HTML
-// ================================================
+/**
+ * Sécurise les chaînes de caractères contre les injections lors de la génération HTML.
+ */
 function escapeHtml(text) {
   if (!text) return '';
   const map = {

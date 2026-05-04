@@ -24,16 +24,16 @@ import { Link } from 'react-router-dom';
 export default function PremiumHomePage() {
   return (
     <div className="min-h-screen bg-[#0B0E14] text-white selection:bg-violet-500/30" style={{ fontFamily: "'Inter', sans-serif" }}>
-      {/* --- IMPORT DE LA POLICE INTER --- */}
+      
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');`}
       </style>
 
-      {/* --- EFFETS LUMINEUX --- */}
+     
       <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-violet-600/10 blur-[120px] rounded-full pointer-events-none -z-10" />
       <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-fuchsia-600/10 blur-[150px] rounded-full pointer-events-none -z-10" />
 
-      {/* --- NAVIGATION --- */}
+      
       <nav className="fixed top-0 w-full border-b border-white/5 bg-[#0B0E14]/80 backdrop-blur-xl z-[100]">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -52,7 +52,7 @@ export default function PremiumHomePage() {
         </div>
       </nav>
 
-      {/* --- HERO SECTION --- */}
+     
       <header className="relative pt-48 pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.div
@@ -80,7 +80,7 @@ export default function PremiumHomePage() {
                 </button>
               </Link>
 
-              {/* MODIFICATION ICI : Ajout du Link vers /login */}
+             
               <Link to="/login">
                 <button className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-full font-bold text-lg hover:bg-white/10 transition-all flex items-center gap-3">
                   Rapport ATS Gratuit <Target size={20} />
@@ -117,7 +117,7 @@ export default function PremiumHomePage() {
         </div>
       </header>
 
-      {/* --- STATISTIQUES --- */}
+     
       <section className="py-24 border-y border-white/5 bg-white/[0.01]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
@@ -129,7 +129,7 @@ export default function PremiumHomePage() {
         </div>
       </section>
 
-      {/* --- FEATURES --- */}
+     
       <section id="features" className="py-40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-3xl mb-24">
@@ -149,7 +149,7 @@ export default function PremiumHomePage() {
             />
             <FeatureCard 
               icon={<Mail size={26} className="text-fuchsia-400" />}
-              title="Lettre IA"
+              title="Lettre "
               desc="Des structures optimisées pour la lecture humaine et algorithmique instantanée."
             />
             <FeatureCard 
@@ -166,7 +166,7 @@ export default function PremiumHomePage() {
         </div>
       </section>
 
-      {/* --- FOOTER --- */}
+     
       <footer className="py-20 border-t border-white/5 bg-[#080A0F]">
         <div className="max-w-7xl mx-auto px-6 text-center">
            <Zap className="mx-auto mb-8 text-violet-500/40" size={32} />
@@ -179,7 +179,7 @@ export default function PremiumHomePage() {
   );
 }
 
-// --- SOUS-COMPOSANTS (INCHANGÉS) ---
+
 function StatBox({ value, label }) {
   return (
     <div className="space-y-2">

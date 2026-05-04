@@ -1,14 +1,6 @@
-// ================================================
-// COVER LETTER MODEL - Gestion lettres de motivation
-// ================================================
-
 const pool = require('../config/database');
 
 class CoverLetter {
-
-  // ================================================
-  // CREATE - Créer une lettre depuis un CV
-  // ================================================
   static async create(cvId, userId, data) {
     const {
       title,
@@ -42,9 +34,6 @@ class CoverLetter {
     return result.rows[0];
   }
 
-  // ================================================
-  // FIND BY CV ID - Toutes les lettres d'un CV
-  // ================================================
   static async findByCvId(cvId, userId) {
     const result = await pool.query(
       `SELECT * FROM cover_letters 
@@ -56,9 +45,6 @@ class CoverLetter {
     return result.rows;
   }
 
-  // ================================================
-  // FIND BY ID - Une lettre spécifique
-  // ================================================
   static async findById(id, userId) {
     const result = await pool.query(
       `SELECT cl.*, c.title as cv_title, c.cv_data
@@ -71,9 +57,6 @@ class CoverLetter {
     return result.rows[0];
   }
 
-  // ================================================
-  // FIND ALL BY USER - Toutes les lettres d'un user
-  // ================================================
   static async findByUserId(userId) {
     const result = await pool.query(
       `SELECT cl.*, c.title as cv_title
@@ -87,9 +70,6 @@ class CoverLetter {
     return result.rows;
   }
 
-  // ================================================
-  // UPDATE - Modifier une lettre
-  // ================================================
   static async update(id, userId, updates) {
     const fields = [];
     const values = [];
@@ -132,9 +112,6 @@ class CoverLetter {
     return result.rows[0];
   }
 
-  // ================================================
-  // DELETE - Supprimer une lettre
-  // ================================================
   static async delete(id, userId) {
     const result = await pool.query(
       `DELETE FROM cover_letters 
@@ -146,9 +123,6 @@ class CoverLetter {
     return result.rows[0];
   }
 
-  // ================================================
-  // COUNT BY CV - Nombre de lettres pour un CV
-  // ================================================
   static async countByCvId(cvId, userId) {
     const result = await pool.query(
       `SELECT COUNT(*) as count 

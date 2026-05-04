@@ -13,7 +13,6 @@ export default function Header() {
     navigate('/login')
   }
 
-  // Fonction pour vérifier si un lien est actif
   const isActive = (path) => location.pathname === path
 
   return (
@@ -22,7 +21,6 @@ export default function Header() {
       
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         
-        {/* --- LOGO --- */}
         <Link to="/dashboard" className="flex items-center gap-3 group">
           <motion.div 
             whileHover={{ rotate: 15, scale: 1.1 }}
@@ -35,7 +33,6 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* --- NAVIGATION CENTRALE MISE À JOUR --- */}
         <nav className="hidden lg:flex items-center gap-1">
           <NavLink to="/dashboard" label="Dashboard" active={isActive('/dashboard')} />
           <NavLink to="/cvs" label="Mes CV" active={isActive('/cvs')} />
@@ -44,11 +41,9 @@ export default function Header() {
           <NavLink to="/cv-scoring" label="Analyse ATS" active={isActive('/cv-scoring')} />
         </nav>
 
-        {/* --- ACTIONS UTILISATEUR --- */}
         <div className="flex items-center gap-5 pl-6 border-l border-slate-200">
           
 
-          {/* Profil */}
           <div className="flex items-center gap-3 px-3 py-1.5 hover:bg-slate-50 rounded-2xl transition-all cursor-pointer group">
             <div className="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-md shadow-indigo-100 uppercase">
               {user?.fullName?.split(' ').map(n => n[0]).join('') || 'U'}
@@ -62,7 +57,6 @@ export default function Header() {
             <ChevronDown size={14} className="text-slate-400 group-hover:text-indigo-600 transition-colors" />
           </div>
 
-          {/* Logout */}
           <button
             onClick={handleLogout}
             className="p-2.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all group"

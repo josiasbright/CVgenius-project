@@ -1,7 +1,3 @@
-// ================================================
-// SUMMARY TEMPLATES - Templates pour génération de résumés
-// ================================================
-
 const templates = {
   professional: {
     short: [
@@ -53,14 +49,9 @@ const templates = {
 };
 
 function generate({ jobTitle, yearsExperience, skills, tone = 'professional', length = 'medium' }) {
-  // Sélectionner le template approprié
   const toneTemplates = templates[tone] || templates.professional;
   const lengthTemplates = toneTemplates[length] || toneTemplates.medium;
-  
-  // Choisir un template aléatoire
   const template = lengthTemplates[Math.floor(Math.random() * lengthTemplates.length)];
-  
-  // Formater les compétences
   let skillsText = '';
   if (Array.isArray(skills) && skills.length > 0) {
     if (skills.length === 1) {
@@ -73,11 +64,7 @@ function generate({ jobTitle, yearsExperience, skills, tone = 'professional', le
   } else {
     skillsText = 'diverses technologies';
   }
-  
-  // Formater les années d'expérience
   const years = yearsExperience + (yearsExperience > 1 ? ' ans' : ' an');
-  
-  // Remplacer les variables
   let summary = template
     .replace(/\{jobTitle\}/g, jobTitle)
     .replace(/\{years\}/g, years)

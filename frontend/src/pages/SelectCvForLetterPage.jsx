@@ -10,7 +10,6 @@ export default function SelectCvForLetterPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   
-  // On récupère le template choisi à l'étape précédente
   const selectedTemplate = searchParams.get('template') || 'classique';
   
   const [cvs, setCvs] = useState([]);
@@ -21,7 +20,7 @@ export default function SelectCvForLetterPage() {
     const fetchCvs = async () => {
       try {
         setLoading(true);
-const data = await cvService.getAllCvs();  // ✅        // On s'assure de prendre la bonne clé selon ton backend (cvs ou userCvs)
+const data = await cvService.getAllCvs();  
         setCvs(data.cvs || data.userCvs || []);
       } catch (err) {
         console.error("Erreur lors de la récupération des CV:", err);
@@ -33,8 +32,7 @@ const data = await cvService.getAllCvs();  // ✅        // On s'assure de prend
   }, []);
 
   const handleCvSelection = (cvId) => {
-    console.log(`🚀 CV sélectionné : ${cvId} | Template : ${selectedTemplate}`);
-    // Redirection vers la page de création avec les deux paramètres
+    console.log(`CV sélectionné : ${cvId} | Template : ${selectedTemplate}`);
     navigate(`/letters/create?template=${selectedTemplate}&cvId=${cvId}`);
   };
 
@@ -46,7 +44,7 @@ const data = await cvService.getAllCvs();  // ✅        // On s'assure de prend
     <div className="min-h-screen bg-[#F8FAFC] py-12 px-6">
       <div className="max-w-4xl mx-auto">
         
-        {/* --- HEADER --- */}
+       
         <button 
           onClick={() => navigate('/letters/templates')} 
           className="flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-xs uppercase tracking-widest mb-8 transition-all"
@@ -59,7 +57,7 @@ const data = await cvService.getAllCvs();  // ✅        // On s'assure de prend
           <p className="text-slate-500 font-medium">Choisissez le CV dont nous extrairons vos expériences pour la lettre.</p>
         </div>
 
-        {/* --- RECHERCHE --- */}
+       
         <div className="mb-8 relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
           <input 
@@ -71,7 +69,7 @@ const data = await cvService.getAllCvs();  // ✅        // On s'assure de prend
           />
         </div>
 
-        {/* --- LISTE DES CV --- */}
+        
         {loading ? (
           <div className="flex flex-col items-center py-20">
             <div className="w-10 h-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>

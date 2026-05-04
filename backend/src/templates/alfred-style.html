@@ -21,17 +21,17 @@
 <body class="font-sans antialiased">
     <div class="flex h-full">
         
-        <!-- SIDEBAR GAUCHE (35%) - FOND NOIR -->
+    
         <div class="w-[35%] bg-[#2D2D2D] text-white px-8 py-10">
             
-            <!-- PHOTO RONDE -->
+         
             <div class="w-48 h-48 rounded-full bg-gray-200 mx-auto mb-12 overflow-hidden">
                 {{#if photoUrl}}
                 <img src="{{photoUrl}}" class="w-full h-full object-cover" alt="Photo">
                 {{/if}}
             </div>
             
-            <!-- COORDONNÉES -->
+          
             <div class="mb-12">
                 <h2 class="text-xl font-bold uppercase mb-6">Coordonnées</h2>
                 <div class="space-y-3 text-sm">
@@ -44,7 +44,7 @@
                 </div>
             </div>
             
-            <!-- LANGUES -->
+         
             {{#if languages}}
             {{#if languages.length}}
             <div class="mb-12">
@@ -58,7 +58,7 @@
             {{/if}}
             {{/if}}
             
-            <!-- COMPÉTENCES -->
+            
             {{#if skills}}
             {{#if skills.length}}
             <div class="mb-12">
@@ -72,7 +72,7 @@
             {{/if}}
             {{/if}}
             
-            <!-- CENTRES D'INTÉRÊTS -->
+           
             {{#if hobbies}}
             {{#if hobbies.length}}
             <div>
@@ -87,17 +87,16 @@
             {{/if}}
         </div>
         
-        <!-- COLONNE DROITE (65%) - FOND BLANC -->
         <div class="w-[65%] bg-white px-10 py-10">
             
-            <!-- HEADER -->
+           
             <div class="mb-10">
                 <h1 class="text-6xl font-bold text-gray-900 mb-2">{{firstname}}</h1>
                 <h1 class="text-6xl font-bold text-gray-900 mb-4">{{lastname}}</h1>
                 <p class="text-lg font-bold uppercase text-gray-900">{{title}}</p>
             </div>
             
-            <!-- EXPÉRIENCES PROFESSIONNELLES -->
+     
             {{#if experiences}}
             {{#if experiences.length}}
             <div class="mb-10">
@@ -136,7 +135,7 @@
             {{/if}}
             {{/if}}
             
-            <!-- FORMATIONS -->
+           
             {{#if education}}
             {{#if education.length}}
             <div>

@@ -1,12 +1,5 @@
-// ================================================
-// CV SCORER - Algorithme de scoring ATS
-// ================================================
-
 class CvScorer {
 
-  // ================================================
-  // ANALYZE - Analyse complète du CV
-  // ================================================
   static analyze(text, numPages) {
     const analysis = {
       lengthOk: false,
@@ -22,12 +15,8 @@ class CvScorer {
     const recommendations = [];
     let score = 0;
 
-    // Nettoyer le texte
     const cleanText = text.toLowerCase();
 
-    // ================================================
-    // CRITÈRE 1 : Longueur (10 points)
-    // ================================================
     if (numPages >= 1 && numPages <= 2) {
       analysis.lengthOk = true;
       score += 10;
@@ -39,9 +28,6 @@ class CvScorer {
       );
     }
 
-    // ================================================
-    // CRITÈRE 2 : Mots-clés métier (20 points)
-    // ================================================
     const keywords = [
       'expérience', 'compétence', 'formation', 'projet',
       'réalisation', 'mission', 'responsabilité', 'résultat',
@@ -57,9 +43,6 @@ class CvScorer {
       recommendations.push('Utilisez des verbes d\'action et mots-clés professionnels (expérience, compétences, projets, réalisations).');
     }
 
-    // ================================================
-    // CRITÈRE 3 : Dates présentes (15 points)
-    // ================================================
     const datePatterns = [
       /\d{4}/g,                    // 2020
       /\d{2}\/\d{4}/g,             // 01/2020
@@ -76,9 +59,6 @@ class CvScorer {
       recommendations.push('Ajoutez des dates claires pour vos expériences et formations (format : MM/AAAA ou AAAA - AAAA).');
     }
 
-    // ================================================
-    // CRITÈRE 4 : Sections structurées (15 points)
-    // ================================================
     const sections = [
       /exp[ée]rience/i,
       /formation/i,
@@ -95,9 +75,6 @@ class CvScorer {
       recommendations.push('Structurez votre CV avec des sections claires : Expérience, Formation, Compétences.');
     }
 
-    // ================================================
-    // CRITÈRE 5 : Coordonnées complètes (10 points)
-    // ================================================
     const hasEmail = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(text);
     const hasPhone = /(\+33|0)[1-9](\s?\d{2}){4}/.test(text.replace(/\s/g, ''));
 
@@ -109,10 +86,6 @@ class CvScorer {
       if (!hasPhone) recommendations.push('Ajoutez votre numéro de téléphone.');
     }
 
-    // ================================================
-    // CRITÈRE 6 : Pas de tableaux complexes (10 points)
-    // ================================================
-    // Détection approximative : beaucoup de caractères | ou _
     const tableIndicators = (text.match(/\|/g) || []).length;
     
     if (tableIndicators < 20) {
@@ -122,10 +95,6 @@ class CvScorer {
       recommendations.push('Évitez les tableaux complexes, privilégiez des listes à puces simples.');
     }
 
-    // ================================================
-    // CRITÈRE 7 : Texte lisible (10 points)
-    // ================================================
-    // Si ratio texte/longueur est correct (pas que des caractères spéciaux)
     const alphaNumRatio = (text.match(/[a-zA-Z0-9]/g) || []).length / text.length;
     
     if (alphaNumRatio > 0.7) {
@@ -135,17 +104,9 @@ class CvScorer {
       recommendations.push('Assurez-vous que votre CV utilise une police lisible et standard.');
     }
 
-    // ================================================
-    // CRITÈRE 8 : Peu d'images/logos (10 points)
-    // ================================================
-    // Difficile à détecter dans le texte extrait
-    // On assume OK par défaut (bonus)
     analysis.fewImages = true;
     score += 10;
 
-    // ================================================
-    // RETOUR
-    // ================================================
     return {
       score: Math.min(score, 100), // Cap à 100
       analysis,
@@ -154,10 +115,6 @@ class CvScorer {
         : ['Votre CV est bien optimisé pour les ATS !']
     };
   }
-
-  // ================================================
-  // GET STRENGTHS - Points forts détectés
-  // ================================================
   static getStrengths(analysis) {
     const strengths = [];
 
@@ -174,9 +131,6 @@ class CvScorer {
       : ['Continuez vos efforts pour optimiser votre CV'];
   }
 
-  // ================================================
-  // GET WEAKNESSES - Points à améliorer
-  // ================================================
   static getWeaknesses(analysis) {
     const weaknesses = [];
 

@@ -1,14 +1,6 @@
-// ================================================
-// CV SCORE MODEL
-// ================================================
-
 const pool = require('../config/database');
 
 class CvScore {
-
-  // ================================================
-  // CREATE - Enregistrer un résultat d'analyse
-  // ================================================
   static async create(userId, filename, score, analysisDetails, recommendations) {
     const result = await pool.query(
       `INSERT INTO cv_scores 
@@ -27,9 +19,6 @@ class CvScore {
     return result.rows[0];
   }
 
-  // ================================================
-  // FIND BY ID
-  // ================================================
   static async findById(id) {
     const result = await pool.query(
       `SELECT * FROM cv_scores WHERE id = $1`,
@@ -39,9 +28,6 @@ class CvScore {
     return result.rows[0];
   }
 
-  // ================================================
-  // FIND BY USER
-  // ================================================
   static async findByUserId(userId) {
     const result = await pool.query(
       `SELECT * FROM cv_scores 
@@ -53,9 +39,6 @@ class CvScore {
     return result.rows;
   }
 
-  // ================================================
-  // GET RECENT - Analyses récentes (publiques)
-  // ================================================
   static async getRecent(limit = 10) {
     const result = await pool.query(
       `SELECT id, filename, score, created_at 
@@ -68,9 +51,6 @@ class CvScore {
     return result.rows;
   }
 
-  // ================================================
-  // GET AVERAGE SCORE - Score moyen
-  // ================================================
   static async getAverageScore() {
     const result = await pool.query(
       `SELECT AVG(score)::INTEGER as avg_score 
@@ -80,9 +60,6 @@ class CvScore {
     return result.rows[0]?.avg_score || 0;
   }
 
-  // ================================================
-  // COUNT TOTAL
-  // ================================================
   static async count() {
     const result = await pool.query(
       `SELECT COUNT(*) as count FROM cv_scores`

@@ -1,28 +1,9 @@
-/**
- * ================================================
- * PDF GENERATOR - CVGenius
- * ================================================
- * Génère des PDFs pour :
- * - CVs (avec templates Handlebars)
- * - Lettres de motivation (HTML brut)
- * - Documents de test
- */
-
 const puppeteer = require('puppeteer');
 const fs = require('fs').promises;
 const path = require('path');
 const handlebars = require('handlebars');
 
-// ================================================
-// HELPERS HANDLEBARS
-// ================================================
-
-// Helper pour comparer dans les templates
 handlebars.registerHelper('lt', (a, b) => a < b);
-
-// ================================================
-// CLASSE PDF GENERATOR
-// ================================================
 
 class PdfGenerator {
     constructor() {
@@ -30,16 +11,10 @@ class PdfGenerator {
         this.isInitialized = false;
     }
 
-    // ================================================
-    // INITIALISATION DU NAVIGATEUR
-    // ================================================
     async initialize() {
-        // Vérifier si le navigateur existe ET est encore connecté
         if (this.isInitialized && this.browser && this.browser.connected) {
             return;
         }
-
-        console.log("🌐 Lancement (ou relance) du navigateur Puppeteer...");
         
         try {
             this.browser = await puppeteer.launch({
@@ -55,31 +30,19 @@ class PdfGenerator {
                 timeout: 60000
             });
             
-            // Écouter si le navigateur se ferme inopinément
             this.browser.on('disconnected', () => {
-                console.warn("⚠️ Puppeteer s'est déconnecté.");
                 this.isInitialized = false;
             });
-
             this.isInitialized = true;
-            console.log("✅ Puppeteer initialisé avec succès");
-            
         } catch (error) {
-            console.error("❌ Échec du lancement de Puppeteer:", error);
             this.isInitialized = false;
             throw error;
         }
     }
-
-    // ================================================
-    // GÉNÉRATION PDF DEPUIS TEMPLATE (Pour les CVs)
-    // ================================================
     async generateFromTemplate(cv, mappedData) {
         await this.initialize();
         const page = await this.browser.newPage();
-
         try {
-            // Liste des templates réels disponibles
             const validTemplates = [
                 'alfred-style', 
                 'benjamin-style', 
@@ -88,37 +51,20 @@ class PdfGenerator {
                 'sebastian-style', 
                 'thomas-style'
             ];
-
-            // Vérifier si le template existe, sinon utiliser thomas-style par défaut
             let templateName = cv.template_name;
             if (!validTemplates.includes(templateName)) {
-                console.warn(`⚠️ Template "${templateName}" inconnu. Utilisation de thomas-style.`);
                 templateName = 'thomas-style'; 
             }
-
-            console.log(`📄 Génération PDF avec template: ${templateName}`);
-
-            // Chargement du fichier template
             const templatePath = path.join(__dirname, '../templates', `${templateName}.html`);
             const templateHtml = await fs.readFile(templatePath, 'utf-8');
-
-            // Compilation Handlebars
             const template = handlebars.compile(templateHtml);
             const finalHtml = template(mappedData);
-
-            // Injection du HTML dans la page
             await page.setContent(finalHtml, {
                 waitUntil: 'networkidle0',
                 timeout: 60000
             });
-
-            // Attendre que les fonts soient chargées
             await page.evaluateHandle('document.fonts.ready');
             await new Promise(resolve => setTimeout(resolve, 500));
-
-            console.log('🖨️ Génération du PDF CV...');
-
-            // Générer le PDF
             const pdfBuffer = await page.pdf({
                 format: 'A4',
                 printBackground: true,
@@ -129,12 +75,8 @@ class PdfGenerator {
                     left: '0' 
                 }
             });
-
-            console.log('✅ PDF CV généré avec succès');
             return pdfBuffer;
-
         } catch (error) {
-            console.error('❌ Erreur génération PDF depuis template:', error);
             throw error;
         } finally {
             if (page) {
@@ -142,46 +84,23 @@ class PdfGenerator {
             }
         }
     }
-
-    // ================================================
-    // GÉNÉRATION PDF DEPUIS HTML BRUT (Pour lettres, etc.)
-    // ================================================
     async generate(htmlContent, options = {}) {
         await this.initialize();
         const page = await this.browser.newPage();
-
         try {
-            console.log('📝 Génération PDF depuis HTML brut...');
-
-            // Configuration de la page
             await page.setViewport({
                 width: 1200,
                 height: 1600,
                 deviceScaleFactor: 2,
             });
-
-            // Navigation vers page vierge
-            await page.goto('about:blank', {
-                waitUntil: 'domcontentloaded',
-                timeout: 10000,
-            });
-
-            // Nettoyer le HTML si nécessaire
+            await page.goto('about:blank', { waitUntil: 'domcontentloaded', timeout: 10000 });
             const cleanHtml = this.sanitizeHtml(htmlContent);
-
-            // Injection du HTML
             await page.setContent(cleanHtml, {
                 waitUntil: 'networkidle0',
                 timeout: 45000,
             });
-
-            // Attendre que les fonts soient chargées
             await page.evaluateHandle('document.fonts.ready');
             await new Promise(resolve => setTimeout(resolve, 1000));
-
-            console.log('🖨️ Génération du PDF...');
-
-            // Générer le PDF avec les options fournies
             const pdfBuffer = await page.pdf({
                 format: options.format || 'A4',
                 printBackground: true,
@@ -194,12 +113,8 @@ class PdfGenerator {
                 preferCSSPageSize: false,
                 displayHeaderFooter: false,
             });
-
-            console.log('✅ PDF généré avec succès');
             return pdfBuffer;
-
         } catch (error) {
-            console.error('❌ Erreur génération PDF:', error);
             throw new Error(`Échec génération PDF: ${error.message}`);
         } finally {
             if (page) {
@@ -207,24 +122,13 @@ class PdfGenerator {
             }
         }
     }
-
-    // ================================================
-    // NETTOYAGE DU HTML
-    // ================================================
     sanitizeHtml(html) {
         if (!html || typeof html !== 'string') {
             throw new Error('Le HTML fourni est invalide');
         }
-
         let cleanHtml = html;
-
-        // Supprimer les scripts (sécurité)
         cleanHtml = cleanHtml.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-
-        // Supprimer les iframes
         cleanHtml = cleanHtml.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
-
-        // Ajouter une structure HTML de base si absente
         if (!cleanHtml.includes('<!DOCTYPE') && !cleanHtml.includes('<html')) {
             cleanHtml = `
                 <!DOCTYPE html>
@@ -240,16 +144,9 @@ class PdfGenerator {
                 </html>
             `;
         }
-
         return cleanHtml;
     }
-
-    // ================================================
-    // GÉNÉRATION PDF DE TEST
-    // ================================================
     async generateTestPdf() {
-        console.log('🧪 Génération d\'un PDF de test...');
-        
         const testHtml = `
             <!DOCTYPE html>
             <html lang="fr">
@@ -324,51 +221,25 @@ class PdfGenerator {
             marginLeft: '20mm',
         });
     }
-
-    // ================================================
-    // NETTOYAGE ET FERMETURE
-    // ================================================
     async cleanup() {
         if (this.browser) {
-            console.log('🧹 Fermeture du navigateur Puppeteer...');
             try {
                 await this.browser.close();
                 this.browser = null;
                 this.isInitialized = false;
-                console.log('✅ Navigateur fermé proprement');
-            } catch (error) {
-                console.error('⚠️ Erreur lors de la fermeture du navigateur:', error);
-            }
+            } catch (error) {}
         }
     }
 }
-
-// ================================================
-// SINGLETON - Une seule instance pour toute l'app
-// ================================================
-
 const generator = new PdfGenerator();
-
-// ================================================
-// FERMETURE PROPRE DU PROCESSUS
-// ================================================
-
 process.on('SIGINT', async () => {
-    console.log('\n🛑 Arrêt du serveur (SIGINT)...');
     await generator.cleanup();
     process.exit(0);
 });
-
 process.on('SIGTERM', async () => {
-    console.log('\n🛑 Arrêt du serveur (SIGTERM)...');
     await generator.cleanup();
     process.exit(0);
 });
-
-// ================================================
-// EXPORT
-// ================================================
-
 module.exports = { 
     getPdfGenerator: () => generator 
 };

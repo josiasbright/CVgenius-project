@@ -1,14 +1,7 @@
-// ================================================
-// MODEL ANALYTICS - Statistiques des CV
-// ================================================
-
 const pool = require('../config/database');
 
 class Analytics {
   
-  // ================================================
-  // ENREGISTRER UN ÉVÉNEMENT
-  // ================================================
   static async trackEvent(cvId, eventType) {
     try {
       const query = `
@@ -26,9 +19,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // RÉCUPÉRER LES STATS D'UN CV
-  // ================================================
   static async getStatsByCvId(cvId) {
     try {
       const query = `
@@ -42,7 +32,6 @@ class Analytics {
       
       const result = await pool.query(query, [cvId]);
       
-      // Formater les résultats
       const stats = {
         views: 0,
         downloads: 0
@@ -63,9 +52,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // RÉCUPÉRER LES ÉVÉNEMENTS PAR JOUR (7 DERNIERS JOURS)
-  // ================================================
   static async getEventsByDateRange(cvId, days = 7) {
     try {
       const query = `
@@ -89,9 +75,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // RÉCUPÉRER TOUS LES ÉVÉNEMENTS D'UN CV
-  // ================================================
   static async getAllEventsByCvId(cvId, limit = 100) {
     try {
       const query = `
@@ -110,9 +93,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // SUPPRIMER LES ANALYTICS D'UN CV
-  // ================================================
   static async deleteByCvId(cvId) {
     try {
       const query = 'DELETE FROM cv_analytics WHERE cv_id = $1';
@@ -125,9 +105,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // STATS GLOBALES (ADMIN)
-  // ================================================
   static async getGlobalStats() {
     try {
       const query = `
@@ -153,9 +130,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // TOP CV LES PLUS VUS
-  // ================================================
   static async getTopViewedCvs(limit = 10) {
     try {
       const query = `
@@ -178,9 +152,6 @@ class Analytics {
     }
   }
   
-  // ================================================
-  // ACTIVITÉ RÉCENTE (DERNIÈRES 24H)
-  // ================================================
   static async getRecentActivity(hours = 24, limit = 50) {
     try {
       const query = `

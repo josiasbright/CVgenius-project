@@ -29,7 +29,7 @@ export default function CreateLetterPage() {
 
     setLoading(true);
     try {
-      // ✅ Envoi au backend (createFromCv gère le cas sans offre d'emploi)
+      
       await letterService.createFromCv(cvId, formData);
       navigate('/letters'); 
     } catch (error) {

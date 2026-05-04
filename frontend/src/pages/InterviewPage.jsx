@@ -112,7 +112,7 @@ export default function InterviewPage() {
       
       <div className="max-w-4xl mx-auto">
         
-        {/* HEADER & PROGRESS */}
+        
         <div className="flex items-center justify-between mb-8">
             <div>
                 <h1 className="text-2xl font-black text-slate-900 flex items-center gap-3">
@@ -136,7 +136,7 @@ export default function InterviewPage() {
           />
         </div>
 
-        {/* MAIN QUESTION CARD */}
+       
         <AnimatePresence mode="wait">
           <motion.div
             key={currentQuestion}
@@ -175,7 +175,7 @@ export default function InterviewPage() {
                 animate={{ opacity: 1 }}
                 className="space-y-6"
               >
-                {/* Réponse Suggérée */}
+                
                 <div className="bg-slate-50 rounded-[30px] p-8 border border-slate-100 relative">
                   <h3 className="text-slate-900 font-black text-[11px] uppercase tracking-widest mb-4 flex items-center gap-2">
                     <CheckCircle2 size={16} className="text-emerald-500" /> 
@@ -185,7 +185,7 @@ export default function InterviewPage() {
                   </p>
                 </div>
 
-                {/* Conseil Expert */}
+               
                 <div className="bg-amber-50 rounded-[30px] p-8 border border-amber-100">
                   <h3 className="text-amber-700 font-black text-[11px] uppercase tracking-widest mb-4 flex items-center gap-2">
                     <Lightbulb size={16} /> 

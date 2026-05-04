@@ -16,23 +16,22 @@
 <body class="font-serif bg-white">
     <div class="h-full px-20 py-16 flex flex-col justify-between">
         
-        <!-- COORDONNÉES EXPÉDITEUR -->
         <div class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
             {{content.coordonnees}}
         </div>
         
-        <!-- COORDONNÉES DESTINATAIRE -->
+       
         <div class="text-sm text-gray-700 mt-12">
             <p class="font-semibold">{{content.entete.company}}</p>
             <p class="mt-6">{{content.entete.date}}</p>
         </div>
         
-        <!-- OBJET -->
+       
         <div class="mt-10 text-sm">
             <p class="font-bold">Objet : {{content.entete.objet}}</p>
         </div>
         
-        <!-- CORPS DE LA LETTRE -->
+        
         <div class="mt-8 text-sm text-gray-800 leading-relaxed space-y-4">
             <p>Madame, Monsieur,</p>
             
@@ -45,7 +44,7 @@
             <p class="text-justify">{{content.paragraphe4}}</p>
         </div>
         
-        <!-- SIGNATURE -->
+        
         <div class="mt-8 text-sm text-gray-700">
             <p>Cordialement,</p>
             <p class="mt-4 font-semibold">{{content.signature}}</p>

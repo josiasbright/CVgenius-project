@@ -18,7 +18,6 @@ import { useAuth } from '../context/AuthContext';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  // On récupère 'register' en plus de 'login' depuis le contexte
   const { login, register } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -31,7 +30,6 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Vérification de sécurité locale
     if (formData.password !== formData.confirmPassword) {
       alert("Les mots de passe ne correspondent pas !");
       return;
@@ -40,16 +38,14 @@ export default function RegisterPage() {
     try {
       console.log("Tentative d'inscription pour:", formData.email);
 
-      // 2. ON CRÉE LE COMPTE (Appel au register du AuthContext)
-      // On envoie bien le nom complet, l'email et le mot de passe
+      
       await register(formData.fullName, formData.email, formData.password); 
       
       console.log("Compte créé et utilisateur connecté !");
       
-      // 3. ON REDIRIGE
+     
       navigate('/dashboard');
     } catch (error) {
-      // On affiche l'erreur précise du serveur (ex: "Cet email est déjà utilisé")
       const errorMsg = error.response?.data?.message || "Erreur lors de l'inscription";
       console.error("Détails de l'erreur:", errorMsg);
       alert(errorMsg);
@@ -68,7 +64,7 @@ export default function RegisterPage() {
         className="w-full max-w-6xl bg-white rounded-[40px] flex flex-col lg:flex-row overflow-hidden min-h-[750px] shadow-xl border border-slate-100"
       >
         
-        {/* --- SECTION GAUCHE (FORMULAIRE) --- */}
+       
         <div className="flex-1 p-10 md:p-16 flex flex-col justify-between bg-white">
           <div className="flex items-center gap-2 mb-8">
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
@@ -86,7 +82,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
-              {/* Nom Complet */}
+             
               <div className="relative">
                 <input 
                   type="text" 
@@ -99,7 +95,7 @@ export default function RegisterPage() {
                 <User className="absolute right-5 top-5 text-slate-400" size={18} />
               </div>
 
-              {/* Email */}
+             
               <div className="relative">
                 <input 
                   type="email" 
@@ -112,7 +108,7 @@ export default function RegisterPage() {
                 <Mail className="absolute right-5 top-5 text-slate-400" size={18} />
               </div>
 
-              {/* Mot de passe */}
+              
               <div className="relative">
                 <input 
                   type="password" 
@@ -125,7 +121,7 @@ export default function RegisterPage() {
                 <Lock className="absolute right-5 top-5 text-slate-400" size={18} />
               </div>
 
-              {/* Confirmation */}
+             
               <div className="relative">
                 <input 
                   type="password" 
@@ -159,7 +155,7 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* --- SECTION DROITE --- */}
+        
         <div className="flex-1 bg-slate-100 p-8 flex items-center justify-center relative">
           <div className="w-full h-full bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-500 rounded-[35px] relative overflow-hidden flex items-center justify-center shadow-inner">
             <motion.div animate={{ x: [-10, 10, -10] }} transition={{ repeat: Infinity, duration: 6 }} className="absolute top-10 left-10 text-white/20"><Cloud size={100} fill="currentColor" /></motion.div>

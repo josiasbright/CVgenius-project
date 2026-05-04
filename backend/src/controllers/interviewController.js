@@ -1,14 +1,6 @@
-// ================================================
-// INTERVIEW CONTROLLER - Simulation entretien
-// ================================================
-
 const InterviewQuestion = require('../models/InterviewQuestion');
 
 class InterviewController {
-
-  // ================================================
-  // START SIMULATION - Récupérer 5 questions aléatoires
-  // ================================================
   static async startSimulation(req, res, next) {
     try {
       const questions = await InterviewQuestion.getRandom(5);
@@ -24,9 +16,6 @@ class InterviewController {
     }
   }
 
-  // ================================================
-  // GET ALL QUESTIONS - Toutes les questions (admin)
-  // ================================================
   static async getAllQuestions(req, res, next) {
     try {
       const questions = await InterviewQuestion.getAll();
@@ -42,9 +31,6 @@ class InterviewController {
     }
   }
 
-  // ================================================
-  // GET STATS - Statistiques banque de questions
-  // ================================================
   static async getStats(req, res, next) {
     try {
       const count = await InterviewQuestion.count();

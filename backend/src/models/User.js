@@ -1,18 +1,10 @@
-// ================================================
-// MODEL USER - Gestion des utilisateurs
-// ================================================
-
 const pool = require('../config/database');
 const bcrypt = require('bcrypt');
 
 class User {
   
-  // ================================================
-  // CRÉER UN UTILISATEUR
-  // ================================================
   static async create(email, password, firstName, lastName) {
     try {
-      // Hasher le mot de passe (10 rounds)
       const hashedPassword = await bcrypt.hash(password, 10);
       
       const query = `
@@ -27,7 +19,6 @@ class User {
       return result.rows[0];
       
     } catch (error) {
-      // Erreur duplicate email (contrainte unique)
       if (error.code === '23505') {
         throw new Error('Cet email est déjà utilisé');
       }
@@ -35,9 +26,6 @@ class User {
     }
   }
   
-  // ================================================
-  // TROUVER UN UTILISATEUR PAR EMAIL
-  // ================================================
   static async findByEmail(email) {
     try {
       const query = 'SELECT * FROM users WHERE email = $1';
@@ -50,9 +38,6 @@ class User {
     }
   }
   
-  // ================================================
-  // TROUVER UN UTILISATEUR PAR ID
-  // ================================================
   static async findById(id) {
     try {
       const query = `
@@ -69,9 +54,6 @@ class User {
     }
   }
   
-  // ================================================
-  // VÉRIFIER LE MOT DE PASSE
-  // ================================================
   static async verifyPassword(plainPassword, hashedPassword) {
     try {
       return await bcrypt.compare(plainPassword, hashedPassword);
@@ -80,9 +62,6 @@ class User {
     }
   }
   
-  // ================================================
-  // METTRE À JOUR UN UTILISATEUR
-  // ================================================
   static async update(id, updates) {
     try {
       const { firstName, lastName, email } = updates;
@@ -111,9 +90,6 @@ class User {
     }
   }
   
-  // ================================================
-  // CHANGER LE MOT DE PASSE
-  // ================================================
   static async updatePassword(id, newPassword) {
     try {
       const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -134,9 +110,6 @@ class User {
     }
   }
   
-  // ================================================
-  // SUPPRIMER UN UTILISATEUR
-  // ================================================
   static async delete(id) {
     try {
       const query = 'DELETE FROM users WHERE id = $1 RETURNING id';
@@ -149,9 +122,6 @@ class User {
     }
   }
   
-  // ================================================
-  // COMPTER LES UTILISATEURS (STATS)
-  // ================================================
   static async count() {
     try {
       const query = 'SELECT COUNT(*) as total FROM users';

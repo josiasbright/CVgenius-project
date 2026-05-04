@@ -1,7 +1,6 @@
 import api from "../services/api";
 
 const authService = {
-  // On ajoute fullName ici car ton backend et ton formulaire en ont besoin
   register: async (fullName, email, password) => {
     const response = await api.post('/auth/register', { fullName, email, password })
     return response.data
@@ -18,7 +17,6 @@ const authService = {
   },
 
   getProfile: async () => {
-    // ✅ On utilise /me comme défini dans ton backend
     const response = await api.get('/auth/me')
     return response.data
   },

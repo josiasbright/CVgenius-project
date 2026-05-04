@@ -72,7 +72,7 @@ export default function CvScoringPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              {/* --- HEADER --- */}
+             
               <div className="text-center mb-16">
                 
                 <h1 className="text-5xl font-black text-slate-900 mb-6 tracking-tight">
@@ -83,7 +83,7 @@ export default function CvScoringPage() {
                 </p>
               </div>
 
-              {/* --- FORMULAIRE D'UPLOAD --- */}
+           
               <div className="bg-white rounded-[40px] p-10 md:p-16 shadow-2xl shadow-indigo-100/50 border border-slate-100">
                 <form onSubmit={handleSubmit}>
                   <div className="border-4 border-dashed border-slate-100 rounded-[30px] p-16 text-center group hover:border-indigo-200 hover:bg-indigo-50/30 transition-all cursor-pointer relative">
@@ -139,7 +139,7 @@ export default function CvScoringPage() {
               animate={{ opacity: 1, x: 0 }}
               className="space-y-8"
             >
-              {/* --- RÉSULTATS --- */}
+              
               <button 
                 onClick={() => { setResult(null); setFile(null); }}
                 className="flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-sm transition-colors mb-4"
@@ -148,7 +148,7 @@ export default function CvScoringPage() {
               </button>
 
               <div className="grid lg:grid-cols-3 gap-8">
-                {/* Score Card */}
+             
                 <div className="lg:col-span-1 bg-white rounded-[40px] p-10 shadow-2xl shadow-indigo-100 border border-slate-100 text-center flex flex-col justify-center">
                   <div className="relative w-40 h-40 mx-auto mb-8">
                      <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -172,7 +172,7 @@ export default function CvScoringPage() {
                   </span>
                 </div>
 
-                {/* Details Section */}
+                
                 <div className="lg:col-span-2 space-y-6">
                   {/* Points Forts */}
                   <div className="bg-white rounded-[35px] p-8 shadow-xl shadow-indigo-100/30 border border-slate-100">
@@ -189,7 +189,7 @@ export default function CvScoringPage() {
                     </div>
                   </div>
 
-                  {/* Points Faibles */}
+                 
                   {result.weaknesses?.length > 0 && (
                     <div className="bg-white rounded-[35px] p-8 shadow-xl shadow-indigo-100/30 border border-slate-100">
                       <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-3">
@@ -208,7 +208,7 @@ export default function CvScoringPage() {
                 </div>
               </div>
 
-              {/* Recommandations  */}
+              
               <div className="bg-slate-900 rounded-[40px] p-10 md:p-12 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-10 opacity-10">
                     <Target size={120} />
@@ -231,7 +231,6 @@ export default function CvScoringPage() {
           )}
         </AnimatePresence>
 
-        {/* Footer */}
         <div className="mt-16 text-center">
             <p className="text-[10px] font-black uppercase tracking-[4px] text-slate-400">
                 

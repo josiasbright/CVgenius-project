@@ -14,13 +14,13 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // États du formulaire
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [messageSent, setMessageSent] = useState(false);
 
-  // Gestion de la Connexion
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -31,7 +31,7 @@ export default function LoginPage() {
     }
   };
 
-  // Gestion du Mot de passe oublié
+  
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
@@ -52,10 +52,10 @@ export default function LoginPage() {
         className="w-full max-w-6xl bg-white rounded-[40px] flex flex-col lg:flex-row overflow-hidden min-h-[700px] shadow-2xl shadow-slate-200 border border-slate-100"
       >
         
-        {/* --- SECTION GAUCHE --- */}
+      
         <div className="flex-1 p-10 md:p-16 flex flex-col justify-between bg-white relative">
           
-          {/* Logo */}
+          
           <div className="flex items-center gap-3 mb-12">
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-100">
               <Zap size={22} className="text-white fill-white" />
@@ -65,7 +65,7 @@ export default function LoginPage() {
 
           <AnimatePresence mode="wait">
             {!isForgotPassword ? (
-              // FORMULAIRE DE CONNEXION
+              
               <motion.div 
                 key="login"
                 initial={{ opacity: 0, x: -20 }}
@@ -121,7 +121,7 @@ export default function LoginPage() {
                 </form>
               </motion.div>
             ) : (
-              // FORMULAIRE MOT DE PASSE OUBLIÉ
+              
               <motion.div 
                 key="forgot"
                 initial={{ opacity: 0, x: 20 }}
@@ -173,7 +173,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* --- SECTION DROITE --- */}
+       
         <div className="flex-1 bg-slate-50 p-8 flex items-center justify-center relative">
            <div className="w-full h-full bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900 rounded-[35px] relative overflow-hidden flex items-center justify-center shadow-inner">
                <motion.div 

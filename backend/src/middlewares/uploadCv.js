@@ -2,13 +2,11 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Créer dossier si inexistant
 const uploadDir = 'uploads/cv-analysis';
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configuration stockage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -19,7 +17,6 @@ const storage = multer.diskStorage({
   }
 });
 
-// Filtre types de fichiers
 const fileFilter = (req, file, cb) => {
   const allowedMimes = [
     'application/pdf',
@@ -36,7 +33,7 @@ const fileFilter = (req, file, cb) => {
 const uploadCv = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB max
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
 
 module.exports = uploadCv;

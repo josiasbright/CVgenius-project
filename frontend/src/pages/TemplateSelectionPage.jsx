@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronLeft, CheckCircle2, ArrowRight } from 'lucide-react';
 
-// ✅ Importation de tes images .webp
+
 import imgLorna from '../assets/templates/lorna.webp';
 import imgThomas from '../assets/templates/thomas.webp';
 import imgAlfred from '../assets/templates/alfred.webp';
@@ -28,7 +28,7 @@ export default function TemplateSelectionPage() {
     <div className="min-h-screen bg-[#F8FAFC] py-12 px-6" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="max-w-7xl mx-auto">
         
-        {/* Header */}
+        
         <div className="mb-12">
           <button 
             onClick={() => navigate('/dashboard')}
@@ -41,7 +41,7 @@ export default function TemplateSelectionPage() {
           <p className="text-slate-500 font-medium">Sélectionnez la mise en page idéale pour votre prochain poste.</p>
         </div>
 
-        {/* Grille de Templates */}
+       
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {templates.map((template, index) => (
             <motion.div
@@ -53,16 +53,16 @@ export default function TemplateSelectionPage() {
               className="bg-white rounded-[40px] p-2 shadow-2xl shadow-indigo-100/50 border border-slate-100 group cursor-pointer"
               onClick={() => navigate(`/cvs/create?template=${template.id}`)}
             >
-              {/* Box Image */}
+              
               <div className="relative aspect-[3/4] rounded-[32px] overflow-hidden bg-slate-50 border border-slate-100">
                 <img 
                   src={template.image} 
                   alt={template.name}
                   className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy" // ✅ Optimisation pour le chargement
+                  loading="lazy" //
                 />
 
-                {/* Overlay au Hover */}
+                
                 <div className="absolute inset-0 bg-indigo-600/90 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center text-white p-8">
                     <CheckCircle2 size={48} className="mb-4 scale-50 group-hover:scale-100 transition-transform duration-500" />
                     <p className="font-black text-xl mb-2">Sélectionner</p>
@@ -70,7 +70,7 @@ export default function TemplateSelectionPage() {
                 </div>
               </div>
 
-              {/* Titre et Info */}
+             
               <div className="p-6 flex justify-between items-center">
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">{template.name}</h3>

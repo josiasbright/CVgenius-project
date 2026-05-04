@@ -1,18 +1,11 @@
-// ================================================
-// CV CONTROLLER - Gestion des CV
-// ================================================
-
 const Cv = require('../models/Cv');
 const Analytics = require('../models/Analytics');
 
 class CvController {
   
-  // ================================================
-  // GET ALL - Récupérer tous les CV d'un utilisateur
-  // ================================================
   static async getAll(req, res, next) {
     try {
-      const userId = req.userId; // Vient du middleware authMiddleware
+      const userId = req.userId;
       
       const cvs = await Cv.findByUserId(userId);
       
@@ -26,9 +19,6 @@ class CvController {
     }
   }
   
-  // ================================================
-  // GET ONE - Récupérer un CV par ID
-  // ================================================
   static async getOne(req, res, next) {
     try {
       const userId = req.userId;
@@ -43,9 +33,7 @@ class CvController {
       const cv = await Cv.findById(cvId, userId);
       
       if (!cv) {
-        return res.status(404).json({
-          error: 'CV non trouvé'
-        });
+        return res.status(404).json({ error: 'CV non trouvé' });
       }
       
       res.json({
@@ -57,9 +45,6 @@ class CvController {
     }
   }
   
-  // ================================================
-  // CREATE - Créer un nouveau CV
-  // ================================================
  static async create(req, res, next) {
     try {
       const userId = req.userId;
@@ -73,22 +58,15 @@ class CvController {
         userId,
         title,
         cvData,
-        templateName || 'thomas-style', // ✅ Utilise un nom qui existe vraiment !
+        templateName || 'thomas-style',
         themeColor || '#8B5CF6'
       );
       
-      res.status(201).json({ message: 'CV créé avec succès', cv });
+      res.status(201).json({ cv });
     } catch (error) {
       next(error);
     }
   }
-
-
-  
- 
-  // ================================================
-  // UPDATE - Mettre à jour un CV
-  // ================================================
   static async update(req, res, next) {
     try {
       const userId = req.userId;
@@ -101,15 +79,11 @@ class CvController {
         });
       }
       
-      // Vérifier que le CV existe et appartient à l'user
       const existingCv = await Cv.findById(cvId, userId);
       if (!existingCv) {
-        return res.status(404).json({
-          error: 'CV non trouvé'
-        });
+        return res.status(404).json({ error: 'CV non trouvé' });
       }
       
-      // Mettre à jour
       const cv = await Cv.update(cvId, userId, updates);
       
       res.json({
@@ -122,9 +96,6 @@ class CvController {
     }
   }
   
-  // ================================================
-  // DELETE - Supprimer un CV
-  // ================================================
   static async delete(req, res, next) {
     try {
       const userId = req.userId;
@@ -139,9 +110,7 @@ class CvController {
       const deleted = await Cv.delete(cvId, userId);
       
       if (!deleted) {
-        return res.status(404).json({
-          error: 'CV non trouvé'
-        });
+        return res.status(404).json({ error: 'CV non trouvé' });
       }
       
       res.json({
@@ -153,9 +122,6 @@ class CvController {
     }
   }
   
-  // ================================================
-  // SHARE - Générer un lien public pour partager
-  // ================================================
   static async share(req, res, next) {
     try {
       const userId = req.userId;
@@ -167,15 +133,11 @@ class CvController {
         });
       }
       
-      // Vérifier que le CV existe
       const cv = await Cv.findById(cvId, userId);
       if (!cv) {
-        return res.status(404).json({
-          error: 'CV non trouvé'
-        });
+        return res.status(404).json({ error: 'CV non trouvé' });
       }
       
-      // Générer le slug
       const result = await Cv.generatePublicSlug(cvId, userId);
       
       if (!result) {
@@ -197,9 +159,6 @@ class CvController {
     }
   }
   
-  // ================================================
-  // MAKE PRIVATE - Rendre un CV privé
-  // ================================================
   static async makePrivate(req, res, next) {
     try {
       const userId = req.userId;
@@ -214,9 +173,7 @@ class CvController {
       const result = await Cv.makePrivate(cvId, userId);
       
       if (!result) {
-        return res.status(404).json({
-          error: 'CV non trouvé'
-        });
+        return res.status(404).json({ error: 'CV non trouvé' });
       }
       
       res.json({
@@ -228,9 +185,6 @@ class CvController {
     }
   }
   
-  // ================================================
-  // GET PUBLIC - Récupérer un CV public par slug
-  // ================================================
   static async getPublic(req, res, next) {
     try {
       const slug = req.params.slug;
@@ -243,7 +197,6 @@ class CvController {
         });
       }
       
-      // Tracker la vue
       await Analytics.trackEvent(cv.id, 'view');
       await Cv.incrementViewCount(cv.id);
       

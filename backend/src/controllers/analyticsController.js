@@ -1,15 +1,8 @@
-// ================================================
-// ANALYTICS CONTROLLER - Statistiques des CV
-// ================================================
-
 const Cv = require('../models/Cv');
 const Analytics = require('../models/Analytics');
 
 class AnalyticsController {
   
-  // ================================================
-  // GET CV STATS - Statistiques d'un CV
-  // ================================================
   static async getCvStats(req, res, next) {
     try {
       const userId = req.userId;
@@ -21,18 +14,13 @@ class AnalyticsController {
         });
       }
       
-      // Vérifier que le CV appartient à l'user
       const cv = await Cv.findById(cvId, userId);
       if (!cv) {
-        return res.status(404).json({
-          error: 'CV non trouvé'
-        });
+        return res.status(404).json({ error: 'CV non trouvé' });
       }
       
-      // Récupérer les stats
       const stats = await Analytics.getStatsByCvId(cvId);
       
-      // Récupérer les événements des 7 derniers jours
       const eventsByDate = await Analytics.getEventsByDateRange(cvId, 7);
       
       res.json({
@@ -49,17 +37,12 @@ class AnalyticsController {
     }
   }
   
-  // ================================================
-  // GET DASHBOARD - Stats globales de l'utilisateur
-  // ================================================
   static async getDashboard(req, res, next) {
     try {
       const userId = req.userId;
       
-      // Récupérer tous les CV de l'user
       const cvs = await Cv.findByUserId(userId);
       
-      // Calculer les stats globales
       let totalViews = 0;
       let totalDownloads = 0;
       
@@ -87,9 +70,6 @@ class AnalyticsController {
     }
   }
   
-  // ================================================
-  // TRACK EVENT - Enregistrer un événement (manuel)
-  // ================================================
   static async trackEvent(req, res, next) {
     try {
       const { cvId, eventType } = req.body;
@@ -117,15 +97,11 @@ class AnalyticsController {
     }
   }
   
-  // ================================================
-  // GET RECENT ACTIVITY - Activité récente
-  // ================================================
   static async getRecentActivity(req, res, next) {
     try {
       const userId = req.userId;
       const hours = parseInt(req.query.hours) || 24;
       
-      // Récupérer tous les CV de l'user
       const cvs = await Cv.findByUserId(userId);
       const cvIds = cvs.map(cv => cv.id);
       
@@ -135,8 +111,6 @@ class AnalyticsController {
         });
       }
       
-      // Pour simplifier, on récupère l'activité du premier CV
-      // En production, il faudrait une requête qui filtre par user_id
       const activity = await Analytics.getRecentActivity(hours, 50);
       
       res.json({

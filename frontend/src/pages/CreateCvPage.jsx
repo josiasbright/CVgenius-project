@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import cvService from '../services/cvService';
 
-// 1️⃣ MAPPING PRÉCIS
 const TEMPLATE_CAPABILITIES = {
   'alfred-style': { photo: true, summary: false, web: true, langs: true, hobbies: true, skills: true, refs: false, hobbyType: 'simple' },
   'thomas-style': { photo: true, summary: true, web: true, langs: false, hobbies: true, skills: false, refs: false, hobbyType: 'category' },
@@ -23,7 +22,6 @@ const TEMPLATE_CAPABILITIES = {
 const LANGUAGE_LEVELS = ["Débutant", "Intermédiaire", "Avancé", "Courant", "Maternel"];
 const COMMON_LANGUAGES = ["Français", "Anglais", "Espagnol", "Allemand", "Chinois", "Arabe", "Portugais", "Italien", "Russe"];
 
-// Suggestions de métiers pour l'auto-complétion
 const JOB_SUGGESTIONS = [
   "Développeur Full-Stack", "Développeur Front-End", "Développeur Back-End", 
   "Designer UX/UI", "Data Scientist", "Gestionnaire de Projet", 
@@ -48,7 +46,6 @@ export default function CreateCvPage() {
     }
   });
 
-  // --- LOGIQUE DE NAVIGATION ---
   const availableSteps = [
     { id: 1, label: "Infos", show: true },
     { id: 2, label: "Expériences", show: true },
@@ -62,7 +59,6 @@ export default function CreateCvPage() {
   const handleNext = () => !isLastStep && setStep(availableSteps[currentIdx + 1].id);
   const handlePrev = () => currentIdx > 0 && setStep(availableSteps[currentIdx - 1].id);
 
-  // --- HANDLERS ---
   const updatePersonalInfo = (f, v) => setFormData(p => ({...p, cvData: {...p.cvData, personal_info: {...p.cvData.personal_info, [f]: v}}}));
 
   const handlePhotoUpload = (e) => {
@@ -84,7 +80,6 @@ export default function CreateCvPage() {
     setFormData(p => ({...p, cvData: {...p.cvData, [collection]: p.cvData[collection].filter((_, i) => i !== index)}}));
   };
 
-  // ✅ LOGIQUE SKILLS : Accepter virgules ou entrée
   const handleSkillsChange = (e) => {
     const value = e.target.value;
     if (value.includes(',')) {
@@ -123,7 +118,6 @@ export default function CreateCvPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-20">
-      {/* DATALIST POUR LES SUGGESTIONS DE MÉTIERS */}
       <datalist id="jobs-list">
         {JOB_SUGGESTIONS.map(job => <option key={job} value={job} />)}
       </datalist>
@@ -147,7 +141,6 @@ export default function CreateCvPage() {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* ÉTAPE 1 : INFOS */}
           {step === 1 && (
             <FormSection key="step1" title="Coordonnées" icon={<User size={20}/>}>
               {can.photo && (
@@ -167,7 +160,6 @@ export default function CreateCvPage() {
                 <FormInput label="Prénom" value={formData.cvData.personal_info.first_name} onChange={v => updatePersonalInfo('first_name', v)} />
                 <FormInput label="Nom" value={formData.cvData.personal_info.last_name} onChange={v => updatePersonalInfo('last_name', v)} />
                 
-                {/* ✅ CHAMP MÉTIER AVEC SUGGESTIONS */}
                 <div className="md:col-span-2">
                    <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Titre du CV / Poste visé</label>
                    <input list="jobs-list" type="text" value={formData.cvData.personal_info.job_title} onChange={e => updatePersonalInfo('job_title', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-indigo-600 outline-none transition-all font-semibold text-slate-700" placeholder="Ex: Développeur Full-Stack" />
@@ -182,7 +174,6 @@ export default function CreateCvPage() {
             </FormSection>
           )}
 
-          {/* ÉTAPE 2 : EXPERIENCES */}
           {step === 2 && (
             <FormSection key="step2" title="Expériences" icon={<Briefcase size={20}/>}>
               {formData.cvData.experiences.map((exp, i) => (
@@ -192,7 +183,6 @@ export default function CreateCvPage() {
                     <FormInput label="Poste" value={exp.position} onChange={v => updateArrayItem('experiences', i, 'position', v)} />
                     <FormInput label="Entreprise" value={exp.company} onChange={v => updateArrayItem('experiences', i, 'company', v)} />
                     
-                    {/* ✅ DATES AVEC CALENDRIER (TYPE MONTH) */}
                     <FormInput label="Début" type="month" value={exp.start_date} onChange={v => updateArrayItem('experiences', i, 'start_date', v)} />
                     <FormInput label="Fin" type="month" value={exp.end_date} onChange={v => updateArrayItem('experiences', i, 'end_date', v)} placeholder="Laissez vide si présent" />
                     
@@ -207,7 +197,6 @@ export default function CreateCvPage() {
             </FormSection>
           )}
 
-          {/* ÉTAPE 3 : EDUCATION & SKILLS */}
           {step === 3 && (
             <div className="space-y-10">
               <FormSection title="Formation" icon={<GraduationCap size={20}/>}>
@@ -229,7 +218,7 @@ export default function CreateCvPage() {
 
               {can.skills && (
                 <FormSection title="Compétences" icon={<Code size={20}/>}>
-                  {/* ✅ LOGIQUE SKILLS : AJOUT EN MASSE PAR VIRGULE */}
+
                   <input 
                     className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-indigo-600 font-semibold" 
                     placeholder="Saisissez vos compétences séparées par des virgules (ex: React, Node, Git)" 
@@ -252,7 +241,6 @@ export default function CreateCvPage() {
             </div>
           )}
 
-          {/* ÉTAPE 4 : LANGUES (ALIGNÉES) */}
           {step === 4 && (
             <div className="space-y-10">
               {can.langs && (
@@ -260,7 +248,6 @@ export default function CreateCvPage() {
                   {formData.cvData.languages.map((l, i) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 mb-4 items-center bg-slate-50 p-6 rounded-[24px] relative border border-slate-100">
                       
-                      {/* ✅ SELECT POUR LANGUE */}
                       <div className="flex-1 w-full">
                         <label className="block text-[10px] font-black text-slate-400 uppercase mb-2 px-1">Langue</label>
                         <select className="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-semibold text-slate-700 shadow-sm" value={l.name} onChange={e => updateArrayItem('languages', i, 'name', e.target.value)}>
@@ -269,7 +256,6 @@ export default function CreateCvPage() {
                         </select>
                       </div>
 
-                      {/* ✅ SELECT POUR NIVEAU (ALIGNÉ) */}
                       <div className="flex-1 w-full">
                         <label className="block text-[10px] font-black text-slate-400 uppercase mb-2 px-1">Niveau</label>
                         <select className="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-semibold text-slate-700 shadow-sm" value={l.level} onChange={e => updateArrayItem('languages', i, 'level', e.target.value)}>
@@ -284,7 +270,6 @@ export default function CreateCvPage() {
                 </FormSection>
               )}
 
-              {/* ... Hobbies et Références inchangés ... */}
               {can.hobbies && (
                 <FormSection title="Centres d'intérêt" icon={<Heart size={20}/>}>
                    {can.hobbyType === 'category' ? (
@@ -327,7 +312,6 @@ export default function CreateCvPage() {
   );
 }
 
-// ✅ COMPOSANT INPUT AMÉLIORÉ POUR LES DATES
 function FormInput({ label, value, onChange, placeholder, type = "text" }) {
   return (
     <div className="w-full mb-4">

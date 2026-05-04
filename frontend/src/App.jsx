@@ -3,7 +3,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-// Pages
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -18,9 +17,6 @@ import CreateLetterPage from './pages/CreateLetterPage';
 import TemplateSelectionPage from './pages/TemplateSelectionPage';
 import LetterTemplateSelectionPage from './pages/LetterTemplateSelectionPage';
 
-/**
- * Composant de Route Protégée
- */
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
@@ -35,12 +31,9 @@ function ProtectedRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
-/**
- * Contenu principal de l'application
- */
 function AppContent() {
   const { isAuthenticated, loading } = useAuth();
-  const location = useLocation(); // On récupère l'URL actuelle
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -50,25 +43,20 @@ function AppContent() {
     );
   }
 
-  // ✅ LISTE DES PAGES OÙ ON NE VEUT PAS DE HEADER/FOOTER DU DASHBOARD
   const hideLayout = ['/', '/login', '/register'].includes(location.pathname);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      
-      {/* ✅ MASQUER LE HEADER SUR LES PAGES PUBLIQUES MÊME SI CONNECTÉ */}
+
       {isAuthenticated && !hideLayout && <Header />}
 
       <main className="flex-1">
         <Routes>
-          {/* --- Routes Publiques --- */}
           <Route path="/" element={<HomePage />} />
-          {/* ✅ Si déjà connecté, le login redirige vers dashboard */}
           <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <RegisterPage />} />
           <Route path="/cv-scoring" element={<CvScoringPage />} />
           
-          {/* --- Routes Privées (Protégées) --- */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <DashboardPage />
@@ -123,12 +111,10 @@ function AppContent() {
             </ProtectedRoute>
           } />
           
-          {/* Redirection automatique */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 
-      {/* ✅ MASQUER LE FOOTER SUR LES PAGES PUBLIQUES */}
       {isAuthenticated && !hideLayout && <Footer />}
     </div>
   );
