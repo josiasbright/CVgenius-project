@@ -60,14 +60,14 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log('================================================');
-  console.log(`✅ Serveur CVGenius démarré`);
-  console.log(`📡 URL : http://localhost:${PORT}`);
-  console.log(`🌍 Environnement : ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🗄️  Base de données : ${process.env.DB_NAME}`);
+  console.log(` Serveur CVGenius démarré`);
+  console.log(` URL : http://localhost:${PORT}`);
+  console.log(` Environnement : ${process.env.NODE_ENV || 'development'}`);
+  console.log(`  Base de données : ${process.env.DB_NAME}`);
   console.log('================================================');
 });
 
 process.on('unhandledRejection', (err) => {
-  console.error('❌ Erreur non gérée :', err);
+  console.error(' Erreur non gérée :', err);
   process.exit(1);
 });
