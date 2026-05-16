@@ -23,7 +23,7 @@ export default function SelectCvForLetterPage() {
 const data = await cvService.getAllCvs();  
         setCvs(data.cvs || data.userCvs || []);
       } catch (err) {
-        console.error("Erreur lors de la récupération des CV:", err);
+       
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ const data = await cvService.getAllCvs();
   }, []);
 
   const handleCvSelection = (cvId) => {
-    console.log(`CV sélectionné : ${cvId} | Template : ${selectedTemplate}`);
+    
     navigate(`/letters/create?template=${selectedTemplate}&cvId=${cvId}`);
   };
 

@@ -36,18 +36,18 @@ export default function RegisterPage() {
     }
     
     try {
-      console.log("Tentative d'inscription pour:", formData.email);
+      
 
       
       await register(formData.fullName, formData.email, formData.password); 
       
-      console.log("Compte créé et utilisateur connecté !");
+     
       
      
       navigate('/dashboard');
     } catch (error) {
       const errorMsg = error.response?.data?.message || "Erreur lors de l'inscription";
-      console.error("Détails de l'erreur:", errorMsg);
+      
       alert(errorMsg);
     }
   };

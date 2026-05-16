@@ -14,5 +14,9 @@ dist/
 frontend/dist/
 backend/dist/
 
+# Base de données
+schema.sql
+
 # Divers
 .DS_Store
+*.log
