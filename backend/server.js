@@ -63,7 +63,7 @@ app.listen(PORT, () => {
   console.log(` Serveur CVGenius démarré`);
   console.log(` URL : http://localhost:${PORT}`);
   console.log(` Environnement : ${process.env.NODE_ENV || 'development'}`);
-  console.log(`  Base de données : ${process.env.DB_NAME}`);
+ console.log(`🗄️  Base de données : ${process.env.DATABASE_URL ? 'Connecté' : 'Non connecté'}`);
   console.log('================================================');
 });
 
