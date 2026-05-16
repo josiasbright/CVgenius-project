@@ -12,33 +12,43 @@ class PdfGenerator {
     }
 
     async initialize() {
-        if (this.isInitialized && this.browser && this.browser.connected) {
-            return;
-        }
-        
-        try {
-            this.browser = await puppeteer.launch({
-                headless: 'new',
-                args: [
-                    '--no-sandbox', 
-                    '--disable-setuid-sandbox', 
-                    '--disable-dev-shm-usage',
-                    '--disable-gpu',
-                    '--disable-web-security',
-                    '--font-render-hinting=none'
-                ],
-                timeout: 60000
-            });
-            
-            this.browser.on('disconnected', () => {
-                this.isInitialized = false;
-            });
-            this.isInitialized = true;
-        } catch (error) {
-            this.isInitialized = false;
-            throw error;
-        }
+    if (this.isInitialized && this.browser && this.browser.connected) {
+        return;
     }
+    
+    try {
+        const launchOptions = {
+            headless: 'new',
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox', 
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--disable-web-security',
+                '--font-render-hinting=none',
+                '--single-process'
+            ],
+            timeout: 60000
+        };
+
+        // Sur Render, utiliser le Chrome système
+        if (process.env.NODE_ENV === 'production') {
+            launchOptions.executablePath = '/usr/bin/chromium-browser' 
+                || '/usr/bin/chromium'
+                || '/usr/bin/google-chrome';
+        }
+
+        this.browser = await puppeteer.launch(launchOptions);
+        
+        this.browser.on('disconnected', () => {
+            this.isInitialized = false;
+        });
+        this.isInitialized = true;
+    } catch (error) {
+        this.isInitialized = false;
+        throw error;
+    }
+}
     async generateFromTemplate(cv, mappedData) {
         await this.initialize();
         const page = await this.browser.newPage();
