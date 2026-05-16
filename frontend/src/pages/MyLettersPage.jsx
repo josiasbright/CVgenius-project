@@ -34,7 +34,7 @@ export default function MyLettersPage() {
       const data = await letterService.getAllLetters();
       setLetters(data.coverLetters || []); 
     } catch (error) {
-      console.error('Erreur chargement lettres:', error);
+      
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ export default function MyLettersPage() {
       await letterService.deleteLetter(id);
       loadLetters();
     } catch (error) {
-      console.error('Erreur suppression:', error);
+      
     }
   };
 
@@ -59,7 +59,7 @@ export default function MyLettersPage() {
       a.download = `${title}.pdf`;
       a.click();
     } catch (error) {
-      console.error('Erreur téléchargement:', error);
+      
     }
   };
 
@@ -68,10 +68,10 @@ export default function MyLettersPage() {
     try {
       const pdfBlob = await letterService.generatePdf(id);
       const url = window.URL.createObjectURL(pdfBlob);
-      // Ouvrir le PDF dans un nouvel onglet
+      
       window.open(url, '_blank');
     } catch (error) { 
-      console.error('Erreur preview:', error); 
+     
       alert('Impossible d\'afficher l\'aperçu de la lettre');
     }
   };

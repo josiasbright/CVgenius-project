@@ -29,7 +29,7 @@ export default function MyCvsPage() {
       const data = await cvService.getAllCvs();
       setCvs(data.cvs || []);
     } catch (error) { 
-      console.error('Erreur chargement CV:', error); 
+      
     } finally { 
       setLoading(false); 
     }
@@ -41,7 +41,7 @@ export default function MyCvsPage() {
       await cvService.deleteCv(id); 
       loadCvs(); 
     } catch (error) { 
-      console.error('Erreur suppression:', error); 
+     
     }
   };
 
@@ -64,7 +64,7 @@ export default function MyCvsPage() {
       a.download = `${title || 'mon-cv'}.pdf`;
       a.click();
     } catch (error) { 
-      console.error('Erreur téléchargement:', error); 
+     
     }
   };
 

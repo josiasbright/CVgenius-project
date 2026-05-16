@@ -29,13 +29,13 @@ export default function InterviewPage() {
   const loadQuestions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/interview/start', {
+     const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/interview/start`, {
         withCredentials: true
       });
       setQuestions(response.data.questions);
       setLoading(false);
     } catch (error) {
-      console.error('Erreur chargement questions:', error);
+      
       setLoading(false);
     }
   };

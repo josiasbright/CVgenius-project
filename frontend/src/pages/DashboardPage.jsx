@@ -25,7 +25,7 @@ export default function DashboardPage() {
         const response = await api.get('/cvs');
         setDocuments(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des documents:", error);
+       
       } finally {
         setLoading(false);
       }

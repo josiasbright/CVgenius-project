@@ -36,8 +36,8 @@ export default function CvScoringPage() {
     formData.append('cv', file);
 
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/cv-score/analyze',
+     const response = await axios.post(
+  `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/cv-score/analyze`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -46,7 +46,7 @@ export default function CvScoringPage() {
       );
       setResult(response.data);
     } catch (error) {
-      console.error('Erreur analyse:', error);
+     
       alert("Une erreur est survenue lors de l'analyse.");
     } finally {
       setLoading(false);
