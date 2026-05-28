@@ -7,6 +7,7 @@ const path = require('path');
 class CvScoreController {
   static async analyzeCv(req, res, next) {
     let filePath = null;
+    let safeFilePath = null;
 
     try {
       if (!req.file) {
@@ -16,23 +17,21 @@ class CvScoreController {
       }
 
       filePath = req.file.path;
-const filename = req.file.originalname;
+      const filename = req.file.originalname;
 
+      const uploadsDir = path.resolve('uploads');
+      const resolvedPath = path.resolve(filePath);
+      if (!resolvedPath.startsWith(uploadsDir)) {
+        return res.status(400).json({ error: 'Chemin de fichier non autorisé' });
+      }
+      safeFilePath = resolvedPath;
 
-const uploadsDir = path.resolve('uploads');
-const resolvedPath = path.resolve(filePath);
-if (!resolvedPath.startsWith(uploadsDir)) {
-  return res.status(400).json({ error: 'Chemin de fichier non autorisé' });
-}
+      const extracted = await TextExtractor.extract(safeFilePath);
+      const cleanText = TextExtractor.cleanText(extracted.text);
+      const result = CvScorer.analyze(cleanText, extracted.numPages);
+      const strengths = CvScorer.getStrengths(result.analysis);
+      const weaknesses = CvScorer.getWeaknesses(result.analysis);
 
-
-
-const extracted = await TextExtractor.extract(resolvedPath);
-const cleanText = TextExtractor.cleanText(extracted.text);
-const result = CvScorer.analyze(cleanText, extracted.numPages);
-const strengths = CvScorer.getStrengths(result.analysis);
-const weaknesses = CvScorer.getWeaknesses(result.analysis);
-      
       const userId = req.userId || null;
       const cvScore = await CvScore.create(
         userId,
@@ -42,7 +41,8 @@ const weaknesses = CvScorer.getWeaknesses(result.analysis);
         result.recommendations
       );
 
-      await fs.unlink(resolvedPath);
+      await fs.unlink(safeFilePath);
+
       res.json({
         message: 'Analyse terminée',
         score: result.score,
@@ -52,10 +52,10 @@ const weaknesses = CvScorer.getWeaknesses(result.analysis);
         analysisId: cvScore.id
       });
 
-   } catch (error) {
-      if (filePath) {
+    } catch (error) {
+      if (safeFilePath) {
         try {
-          await fs.unlink(path.resolve(filePath));
+          await fs.unlink(safeFilePath);
         } catch (e) {}
       }
       next(error);
