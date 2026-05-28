@@ -42,8 +42,7 @@ const weaknesses = CvScorer.getWeaknesses(result.analysis);
         result.recommendations
       );
 
-      await fs.unlink(filePath);
-
+      await fs.unlink(resolvedPath);
       res.json({
         message: 'Analyse terminée',
         score: result.score,
@@ -53,10 +52,10 @@ const weaknesses = CvScorer.getWeaknesses(result.analysis);
         analysisId: cvScore.id
       });
 
-    } catch (error) {
+   } catch (error) {
       if (filePath) {
         try {
-          await fs.unlink(filePath);
+          await fs.unlink(path.resolve(filePath));
         } catch (e) {}
       }
       next(error);
