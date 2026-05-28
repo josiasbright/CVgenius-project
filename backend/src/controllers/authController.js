@@ -13,12 +13,17 @@ class AuthController {
         });
       }
       
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        return res.status(400).json({
-          error: 'Format d\'email invalide'
-        });
-      }
+     if (email.length > 254) {
+  return res.status(400).json({
+    error: 'Format d\'email invalide'
+  });
+}
+const atIndex = email.indexOf('@');
+if (atIndex < 1 || atIndex !== email.lastIndexOf('@') || atIndex === email.length - 1) {
+  return res.status(400).json({
+    error: 'Format d\'email invalide'
+  });
+}
       
       if (password.length < 6) {
         return res.status(400).json({

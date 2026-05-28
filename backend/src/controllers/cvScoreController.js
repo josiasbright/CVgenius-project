@@ -2,6 +2,7 @@ const CvScore = require('../models/CvScore');
 const TextExtractor = require('../utils/textExtractor');
 const CvScorer = require('../utils/cvScorer');
 const fs = require('fs').promises;
+const path = require('path');
 
 class CvScoreController {
   static async analyzeCv(req, res, next) {
@@ -15,12 +16,21 @@ class CvScoreController {
       }
 
       filePath = req.file.path;
-      const filename = req.file.originalname;
-      const extracted = await TextExtractor.extract(filePath);
-      const cleanText = TextExtractor.cleanText(extracted.text);
-      const result = CvScorer.analyze(cleanText, extracted.numPages);
-      const strengths = CvScorer.getStrengths(result.analysis);
-      const weaknesses = CvScorer.getWeaknesses(result.analysis);
+const filename = req.file.originalname;
+
+
+
+const uploadsDir = path.resolve('uploads');
+const resolvedPath = path.resolve(filePath);
+if (!resolvedPath.startsWith(uploadsDir)) {
+  return res.status(400).json({ error: 'Chemin de fichier non autorisé' });
+}
+
+const extracted = await TextExtractor.extract(filePath);
+const cleanText = TextExtractor.cleanText(extracted.text);
+const result = CvScorer.analyze(cleanText, extracted.numPages);
+const strengths = CvScorer.getStrengths(result.analysis);
+const weaknesses = CvScorer.getWeaknesses(result.analysis);
       
       const userId = req.userId || null;
       const cvScore = await CvScore.create(

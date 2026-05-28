@@ -31,7 +31,7 @@ class PdfGenerator {
             timeout: 60000
         };
 
-        // Sur Render, utiliser le Chrome système
+        
         if (process.env.NODE_ENV === 'production') {
             launchOptions.executablePath = '/usr/bin/chromium-browser' 
                 || '/usr/bin/chromium'
@@ -136,9 +136,18 @@ class PdfGenerator {
         if (!html || typeof html !== 'string') {
             throw new Error('Le HTML fourni est invalide');
         }
+        if (html.length > 500000) {
+            throw new Error('HTML trop volumineux');
+        }
         let cleanHtml = html;
-        cleanHtml = cleanHtml.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-        cleanHtml = cleanHtml.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+        const dangerousTags = ['script', 'iframe', 'object', 'embed', 'form'];
+        dangerousTags.forEach(tag => {
+            const open = new RegExp('<' + tag + '[\\s>][\\s\\S]*?<\\/' + tag + '>', 'gi');
+            const selfClose = new RegExp('<' + tag + '[^>]*\\/>', 'gi');
+            cleanHtml = cleanHtml.replace(open, '');
+            cleanHtml = cleanHtml.replace(selfClose, '');
+        });
+        cleanHtml = cleanHtml.replace(/\son\w+\s*=\s*["'][^"']*["']/gi, '');
         if (!cleanHtml.includes('<!DOCTYPE') && !cleanHtml.includes('<html')) {
             cleanHtml = `
                 <!DOCTYPE html>
