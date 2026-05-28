@@ -29,7 +29,7 @@ const globalLimiter = rateLimit({
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10, // 10 tentatives max
+  max: 10, 
   message: { error: 'Trop de tentatives de connexion, réessaye dans 15 minutes.' }
 });
 
@@ -53,9 +53,8 @@ app.get('/api/csrf-token', (req, res) => {
   res.json({ csrfToken: generateToken(req, res) });
 });
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(doubleCsrfProtection);
-}
+app.use(doubleCsrfProtection);
+
 app.use('/uploads', express.static('uploads'));
 
 if (process.env.NODE_ENV === 'development') {
