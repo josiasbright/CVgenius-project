@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const corsOptions = require('./src/config/cors');
 const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
@@ -13,19 +14,38 @@ const coverLetterRoutes = require('./src/routes/coverLetterRoutes');
 const interviewRoutes = require('./src/routes/interviewRoutes');
 const cvScoreRoutes = require('./src/routes/cvScoreRoutes');
 const errorHandler = require('./src/middlewares/errorHandler');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate limiting global
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 requêtes max par IP
+  message: { error: 'Trop de requêtes, réessaye dans 15 minutes.' }
+});
+
+// Rate limiting strict pour l'authentification
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, // 10 tentatives max
+  message: { error: 'Trop de tentatives de connexion, réessaye dans 15 minutes.' }
+});
+
 app.use(cors(corsOptions));
+app.use(globalLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
+
 if (process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`);
     next();
   });
 }
+
 app.get('/', (req, res) => {
   res.json({
     message: 'CVGenius API Backend',
@@ -35,7 +55,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/cvs', cvRoutes);
 app.use('/api/pdf', pdfRoutes);
@@ -53,17 +73,14 @@ app.use((req, res) => {
   });
 });
 
-
-
 app.use(errorHandler);
-
 
 app.listen(PORT, () => {
   console.log('================================================');
   console.log(` Serveur CVGenius démarré`);
   console.log(` URL : http://localhost:${PORT}`);
   console.log(` Environnement : ${process.env.NODE_ENV || 'development'}`);
- console.log(`🗄️  Base de données : ${process.env.DATABASE_URL ? 'Connecté' : 'Non connecté'}`);
+  console.log(` Base de données : ${process.env.DATABASE_URL ? 'Connecté' : 'Non connecté'}`);
   console.log('================================================');
 });
 
