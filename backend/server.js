@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const { doubleCsrf } = require('csrf-csrf');
 const corsOptions = require('./src/config/cors');
 const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
@@ -18,14 +19,14 @@ const errorHandler = require('./src/middlewares/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Rate limiting global
+
 const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requêtes max par IP
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
   message: { error: 'Trop de requêtes, réessaye dans 15 minutes.' }
 });
 
-// Rate limiting strict pour l'authentification
+
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10, // 10 tentatives max
@@ -37,6 +38,24 @@ app.use(globalLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
+
+const { generateToken, doubleCsrfProtection } = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET || 'csrf-secret-cvgenius',
+  cookieName: 'csrf-token',
+  cookieOptions: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  }
+});
+
+app.get('/api/csrf-token', (req, res) => {
+  res.json({ csrfToken: generateToken(req, res) });
+});
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(doubleCsrfProtection);
+}
 app.use('/uploads', express.static('uploads'));
 
 if (process.env.NODE_ENV === 'development') {
